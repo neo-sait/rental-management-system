@@ -1,0 +1,68 @@
+.page{
+    width: 100vw;
+    height: 100vh;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.Sidebar{
+    height: 100%;
+    width: 300px;
+    background-color: #202020;
+    margin-right: auto;
+}
+
+.SidebarList{
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+.SidebarList .data{
+    color:white;
+    height: 50px;
+    width: 100%;
+    list-style-type:none;
+    justify-content: left;
+    align-items: center;
+    display: flex;
+    padding-left: 20px;
+}
+
+.Logo{
+    width: 100%;
+    height: 300px;
+}
+
+.logoPic{
+    width: 100%;
+    height: 300px;
+}
+
+.Logout{
+    position: absolute;
+    bottom: 30px;
+    font-size: 60;
+    width: 60px;
+    height: 30px;
+    margin-top: 150%;
+    margin-left: 20px;
+    color: white;
+    background-color: transparent;
+    border: none;
+}
+
+.main{
+    margin-right:auto;
+    width: 600px;
+    border: 5px;
+}
+
+.profileInput{
+    border: 1px solid black;
+    margin-bottom: 20px;
+    line-height: 15px;
+}
