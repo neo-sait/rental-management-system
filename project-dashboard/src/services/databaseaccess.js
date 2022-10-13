@@ -7,7 +7,7 @@ const firestore = firebase.firestore();
 // grabs all documents from a collection, returns in json format
 // param String Collection Name
 // return Object
-async function getAll(collection){
+export async function getAll(collection){
     let results = {};
     let list = firestore.collection(collection);
     let snapshot = await list.get();
@@ -23,7 +23,7 @@ async function getAll(collection){
 // param String Collection Name
 // param String Document Name
 // return Object 
-async function get(collection, doc){
+export async function get(collection, doc){
     let list = firestore.collection(collection).doc(doc);
     let document = await list.get();
     if (!document.exists){
@@ -37,14 +37,14 @@ async function get(collection, doc){
 // param String Collection Name
 // param String Document Name
 // param Object Document Data
-async function add(collection,doc,json){
+export async function add(collection,doc,json){
     let list = firestore.collection(collection).doc(doc);
     let document = await list.get();
     list.set(json);
 }
 
 // virtually the same as the add method, however checks if data exists in the first place
-async function set(collection,doc,json){
+export async function set(collection,doc,json){
     let list = firestore.collection(collection).doc(doc);
     let document = await list.get();
     if (!document.exists){

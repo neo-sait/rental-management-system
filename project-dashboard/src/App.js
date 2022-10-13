@@ -5,7 +5,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 
 import {Navbar, Footer, Sidebar, } from './components';
-import {UserProfile, Payments, Tenants, FAQs, Contacts} from './pages';
+import {UserProfile, Payments, Tenants, FAQs, Contacts, Transactions,Import} from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -55,7 +55,9 @@ const App = () => {
               <Route path='/' element={<Tenants />} />
               <Route path='/tenants' element={<Tenants />} />
               <Route path="/payments" element={<Payments />} />
-
+              <Route path="/transactions" element={<Transactions />} />
+              {/* Profile Information */}
+              <Route path="/import" element={<Import />} />
               {/* Profile Information */}
               <Route path="/profile" element={<UserProfile />} />
 

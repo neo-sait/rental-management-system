@@ -20,6 +20,21 @@ export const links = [
         name: 'Payments',
         icon: <MdHistory />,
       },
+      {
+        name: 'Transactions',
+        icon: <MdHistory />,
+      },
+
+    ],
+  },
+  {
+    title: 'Import Data',
+    links: [
+      {
+        name: 'Import',
+        icon: <RiProfileFill />,
+      }
+
     ],
   },
   {
