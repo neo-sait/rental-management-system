@@ -7,38 +7,14 @@ import React, { CSSProperties } from 'react';
 import 'firebase/compat/firestore';
 
 import {db} from '../services/database';
-import {asyncAdd} from '../services/databaseaccess';
+import {asyncAdd,getAll2} from '../services/databaseaccess';
 
 import papa from 'papaparse';
-import { collection, addDoc, Timestamp } from "firebase/firestore"; 
-import { async } from '@firebase/util';
+
 let file = null;
 var dataArr = [];
 let output = [];
 const database = db();
-/*
-async function asyncAdd(jsonIN){
-    try {
-        const docRef = await addDoc(collection(database, "Transactions"), {
-        Address: jsonIN.Address,
-        Date: Timestamp.fromDate(new Date(jsonIN.Date)),
-        DatePaid: Timestamp.fromDate(new Date(jsonIN.DatePaid)),
-        Desc: jsonIN.Desc,
-        HouseNum: jsonIN.HouseNum,
-        Month: parseInt(jsonIN.month),
-        Notes: jsonIN.Notes,
-        Number: parseInt(jsonIN.Number),
-        PayerName: jsonIN.PayerName,
-        PayerTitle:  jsonIN.PayerTitle ,
-        Payment: parseFloat(jsonIN.Payment.replace(/\$.*,.*\s+/g, "")),
-        Year: parseInt(jsonIN.Year),
-        YearNum: parseInt(jsonIN.YearNum),
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-};*/
 
 const handleChange = ({ target: { files } }) => {
   file = files[0];

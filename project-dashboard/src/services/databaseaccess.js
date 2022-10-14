@@ -24,6 +24,21 @@ export async function getAll(collection){
     return results;
 }
 
+
+export async function getAll2(coll){
+    var results = [];
+        const querySnapshot = await getDocs(collection(database, coll));
+    querySnapshot.forEach((doc) => {
+
+    results.push(doc.data());
+    console.log('data added to array');
+   
+    });
+    return results;
+}
+
+
+
 // returns a single data object specified by collection and doc
 // param String Collection Name
 // param String Document Name
