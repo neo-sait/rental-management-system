@@ -1,4 +1,5 @@
-const fb = require('firebase');
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDpsQLdcD3flRFPt62BhrrWBTcgAX9FxXA",
@@ -11,6 +12,13 @@ const firebaseConfig = {
     measurementId: "G-QHTPR8MM0B"
   };
 
-const db = fb.initializeApp(firebaseConfig);
 
-module.exports = db;
+
+const app = initializeApp(firebaseConfig);
+
+export function db() {
+
+return getFirestore(app);
+};
+
+export default {db};

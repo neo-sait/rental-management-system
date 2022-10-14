@@ -15,7 +15,7 @@
     "@syncfusion/ej2-react-richtexteditor": "^19.4.50",
     "@syncfusion/ej2-react-schedule": "^19.4.50",
     "csv-parser": "^3.0.0",
-    "firebase": "^8.10.1",
+    "firebase": "^9.12.1",
     "firebase-admin": "^11.1.0",
     "firestore": "^1.1.6",
     "fs": "^0.0.1-security",

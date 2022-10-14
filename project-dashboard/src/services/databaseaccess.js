@@ -1,8 +1,13 @@
 //https://firebase.google.com/docs/firestore/query-data/get-data
 
-const { async } = require('@firebase/util');
-const firebase = require('./firebase');
-const firestore = firebase.firestore();
+//const { async } = require('@firebase/util');
+//const firebase = require('./firebase');
+//const firestore = firebase.firestore();
+//import { writeBatch, doc, collection, addDoc, Timestamp  } from "firebase/firestore"; 
+import {collection,doc,getDocs,addDoc} from "firebase/firestore";
+import {db} from './database'
+const database = db();
+
 
 // grabs all documents from a collection, returns in json format
 // param String Collection Name
@@ -53,6 +58,31 @@ export async function set(collection,doc,json){
         list.set(json);
     }
 }
+//parseFloat(money.substring(1).replace(',','')) 
+export async function asyncAdd(jsonIN,coll){
+    try {
+        const docRef = await addDoc(collection(database, coll), {
+        Address: jsonIN.Address,//2
+        Date: jsonIN.Date, //4
+        DatePaid: jsonIN.DatePaid, //5
+        Desc: jsonIN.Desc, //13
+        HouseNum: parseInt(jsonIN.HouseNum),//2
+        Month: parseInt(jsonIN.Month), //7
+        Notes: jsonIN.Notes, //15
+        Number: parseInt(jsonIN.Number),//1
+        PayerName: jsonIN.PayerName, //9
+        PayerTitle:  jsonIN.PayerTitle, //10
+        Type: jsonIN.Type, //14
+        PaymentMethod: jsonIN.PaymentMethod,//12
+        Payment: parseFloat(jsonIN.Payment.substring(1).replace(',','')), //11
+        Year: parseInt(jsonIN.Year), //6
+        YearNum: parseInt(jsonIN.YearNum), //8
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
 
 
-module.exports = {getAll,get,add,set};
+//export {getAll,get,add,set,asyncAdd};
