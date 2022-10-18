@@ -5,7 +5,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 
 import {Navbar, Footer, Sidebar, } from './components';
-import {UserProfile, Payments, Tenants, FAQs, Contacts, Transactions,Import} from './pages';
+import {UserProfile, Payments, Tenants, FAQs, Contacts, Transactions,Import, Login} from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -17,6 +17,7 @@ const App = () => {
       <BrowserRouter>
         <div className="flex relative 
         dark:bg-main-dark-bg">
+          
           <div className="fixed right-4 bottom-4" style={{zIndex:'1000'}}>
             <TooltipComponent content="Settings" position="Top">
               <button className="text-3xl p-3
@@ -47,9 +48,8 @@ const App = () => {
               dark:bg-main-dark-bg navbar w-full">
                 <Navbar />
               </div>
-          
 
-          <div>
+          <div id="page">
             <Routes>
               {/* Dashboards */}
               <Route path='/' element={<Tenants />} />
@@ -65,6 +65,7 @@ const App = () => {
               <Route path="/faqs" element={<FAQs/>} />
               <Route path="/contacts" element={<Contacts />} />
 
+              <Route path="/login" element={<Login />} />
 
             </Routes>
           </div>

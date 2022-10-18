@@ -5,3 +5,4 @@ export { default as Payments } from './Payments';
 export { default as UserProfile } from './Profile';
 export { default as Transactions } from './Transactions';
 export { default as Import } from './Import';
+export {default as Login} from './Login';
