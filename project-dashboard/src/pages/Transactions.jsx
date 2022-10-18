@@ -1,11 +1,11 @@
 import React,{useState,useEffect} from 'react';
 import {getAll2} from '../services/databaseaccess';
-
+//import ReactDOM from "react-dom/client";
 
 import {collection,doc,getDocs,addDoc,query,orderBy} from "firebase/firestore";
 import {db} from '../services/database'
 const database = db();
-var dataArr=[];//transactionDetails;
+var dataArrInit = [];//transactionDetails;
 
 const writeTest = () => {
 
@@ -14,24 +14,36 @@ const writeTest = () => {
 };
 
 const Transactions = () => {
-    
+  const [dataArr,setDataArr] = useState(dataArrInit);
   useEffect( async ()=> {
-    
-    if(dataArr.length != parseInt(localStorage.getItem("docCount"))){
-      dataArr = [];
-      const q = query(collection(database, "Transaction"), orderBy("Number"));
+    console.log('use effect triggered');
+    if(dataArrInit.length != parseInt(localStorage.getItem("docCount"))){
+      dataArrInit = [];
+      //dataArr=[];
+      const q = query(collection(database, "TransactionTest"), orderBy("Number"));
 
       //const querySnapshot = await getDocs(collection(database, "Transactions"));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-
-      dataArr.push(doc.data());
+      console.log('trying');
+      dataArrInit.push(doc.data());
+      //setDataArr((dataArr) => [ ...dataArr , doc.data()]);
       console.log('data added to array');
       
-      });
-      localStorage.setItem("docCount",dataArr.length);
+      }
+      
+      );
+      console.log('swapping added to array');
+      console.log('newarr is ' + dataArrInit.length);
+      
+      //b setDataArr(dataArr =>  [...dataArr,dataArrInit] );
+      setDataArr(dataArrInit);
+      
+      console.log('dataarr is ' + dataArr.length);
+
+      localStorage.setItem("docCount",dataArrInit.length);
     }else{
-      localStorage.setItem("docCount",dataArr.length);
+      localStorage.setItem("docCount",dataArrInit.length);
 
     }
       
