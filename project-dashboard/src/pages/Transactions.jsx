@@ -1,11 +1,14 @@
 import React,{useState,useEffect} from 'react';
-import {getAll2} from '../services/databaseaccess';
-//import ReactDOM from "react-dom/client";
+import {AiOutlineReload} from 'react-icons/ai';
+
 
 import {collection,doc,getDocs,addDoc,query,orderBy} from "firebase/firestore";
 import {db} from '../services/database'
+import './Transactions.css';
+
+
 const database = db();
-var dataArrInit = [];//transactionDetails;
+var dataArrInit=[];
 
 const writeTest = () => {
 
@@ -13,21 +16,29 @@ const writeTest = () => {
       console.log(dataArr.length);
 };
 
+
 const Transactions = () => {
   const [dataArr,setDataArr] = useState(dataArrInit);
+  const [order,setOrder] = useState("asc");
+
+  
+
+ 
+
+
   useEffect( async ()=> {
     console.log('use effect triggered');
     if(dataArrInit.length != parseInt(localStorage.getItem("docCount"))){
       dataArrInit = [];
-      //dataArr=[];
-      const q = query(collection(database, "TransactionTest"), orderBy("Number"));
+      
+      const q = query(collection(database, "Transaction"), orderBy("Number"));
 
-      //const querySnapshot = await getDocs(collection(database, "Transactions"));
+    
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
       console.log('trying');
       dataArrInit.push(doc.data());
-      //setDataArr((dataArr) => [ ...dataArr , doc.data()]);
+    
       console.log('data added to array');
       
       }
@@ -36,7 +47,7 @@ const Transactions = () => {
       console.log('swapping added to array');
       console.log('newarr is ' + dataArrInit.length);
       
-      //b setDataArr(dataArr =>  [...dataArr,dataArrInit] );
+   
       setDataArr(dataArrInit);
       
       console.log('dataarr is ' + dataArr.length);
@@ -46,43 +57,51 @@ const Transactions = () => {
       localStorage.setItem("docCount",dataArrInit.length);
 
     }
-      
-
-    
 
   });
 
+
+  const sorting = (col) => { 
+    if (order === "asc"){
+      const sorted = [...dataArr].sort((a,b) => a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1);
+      setDataArr(sorted);
+      setOrder("desc");
+    }
+    else if (order === "desc"){
+      const sorted = [...dataArr].sort((a,b) => a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1);
+      setDataArr(sorted);
+      setOrder("asc");
+    }
+  };
+
   return (
     
-    <div >
-      <div>
-        Transactions
-      </div>
-      <div>
-      <table>
+    <div>
+        <h2>Transactions History</h2>
+      <div class="container">
+      <table class="transactions-table">
         <thead>
           <tr>
-          <th>Num</th>
-          <th>Address</th>
-          <th>House #</th>
-          <th>Date</th>
-          <th>Date Paid</th>
-          <th>Year</th>
-          <th>Month</th>
-          <th>Year #</th>
-          <th>Name</th>
-          <th>Title</th>
-          <th>Payment</th>
-          <th>Method</th>
-          <th>Desc</th>
-          <th>Type</th>
-          <th>Notes</th>
+            <th onClick={()=>sorting("Number")}>Num</th>
+            <th onClick={()=>sorting("Address")}>Address</th>
+            <th onClick={()=>sorting("HouseNum")}>House #</th>
+            <th onClick={()=>sorting("Date")}>Date</th>
+            <th onClick={()=>sorting("DatePaid")}>Date Paid</th>
+            <th onClick={()=>sorting("Year")}>Year</th>
+            <th>Month</th>
+            <th onClick={()=>sorting("YearNum")}>Year #</th>
+            <th onClick={()=>sorting("PayerName")}>Name</th>
+            <th onClick={()=>sorting("PayerTitle")}>Title</th>
+            <th onClick={()=>sorting("Payment")}>Payment</th>
+            <th onClick={()=>sorting("PaymentMethod")}>Method</th>
+            <th onClick={()=>sorting("Desc")}>Desc</th>
+            <th onClick={()=>sorting("Type")}>Type</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
         {dataArr.map((val) => (
-          
-            <tr key={val.Number}>
+            <tr>
               <td>{val.Number}</td>
               <td>{val.Address}</td>
               <td>{val.HouseNum}</td>
@@ -104,11 +123,11 @@ const Transactions = () => {
       </tbody>
       </table>
     </div>
-      <div><button onClick={writeTest}>reload</button></div>
-      <div><button onClick={writeTest}>Arr test</button></div>
+      <div className="items-center gap-2 ml-2 mt-3 flex text-s tracking-tight dark:text-white text-slate-500"><AiOutlineReload/><button onClick='location.reload();'>Reload</button></div>
+      
     </div>
     
-    
+  
   );
   
 }
