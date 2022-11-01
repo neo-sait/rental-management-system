@@ -1,3 +1,4 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
 * {
@@ -55,4 +56,41 @@ h2 {
 
 .tenants-table tr:nth-child(even) {
 	background: #f8f8f8;
+}
+
+.login {
+    width: 360px;
+    height: min-content;
+    padding: 20px;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.login h1 {
+    font-size: 36px;
+    margin-bottom: 25px;
+}
+
+.login form {
+    font-size: 20px;
+}
+
+.login form .form-group {
+    margin-bottom: 12px;
+}
+
+.login form input[type="submit"] {
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+.hide {
+    font-size: 0px;
+}
+
+.response{
+    color: red;
+    font-size: 13px;
+    margin-top: -20px;
+    text-align: left;
 }

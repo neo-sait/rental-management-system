@@ -1,47 +1,53 @@
 import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 import { Sidebar } from '../components';
-import {getAll2} from '../services/databaseaccess'
 import ReactDOM from 'react-dom'
 import {AiOutlineReload} from 'react-icons/ai'
-import {collection, doc, getDocs, addDoc, query, orderBy} from "firebase/firestore"
-import {db} from '../services/database'
 import './Tenants.css'
-const database = db()
-var dataArrInit = []//TenantDataDetails;
+
+let dataArrInit = []
 
 const Tenants = () => {
   const [dataArr, setDataArr] = useState(dataArrInit)
+
+  
   useEffect(async () => {
     console.log('use effect triggered')
     if (dataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
       dataArrInit = []
-      //dataArr=[];
+
+      /*
       const q = query(collection(database, "Tenants"), orderBy("Name"))
 
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
         console.log('trying')
         dataArrInit.push(doc.data())
-        //setDataArr((dataArr) => [ ...dataArr , doc.data()]);
         console.log('data added to array')
 
       }
-
       )
-      console.log('swapping added to array')
-      console.log('newarr is ' + dataArrInit.length)
+      */
 
-      //b setDataArr(dataArr =>  [...dataArr,dataArrInit] );
-      setDataArr(dataArrInit)
+      axios.get('http://localhost:5000/api/loadTenants').then( (res)=>{
+        dataArrInit = res.data;
 
-      console.log('dataarr is ' + dataArr.length)
+        console.log('swapping added to array')
+        console.log('newarr is ' + dataArrInit.length)
 
-      localStorage.setItem("docCount", dataArrInit.length)
+        setDataArr(dataArrInit)
+
+        console.log('dataarr is ' + dataArr.length)
+
+        localStorage.setItem("docCount", dataArrInit.length)
+      })
+
     } else {
       localStorage.setItem("docCount", dataArrInit.length)
-
     }
   })
+
+  console.log(dataArr);
 
   return (
 
@@ -72,11 +78,11 @@ const Tenants = () => {
             {dataArr.map((val) => (
 
               <tr key={val.Name}>
-                <td>{val[`Name`]}</td>
-                <td>{val[`Current Tenant`]}</td>
-                <td>{val[`House Number`]}</td>
-                <td>{val[`Email Address`]}</td>
-                <td>{val[`Phone Number`]}</td>
+                <td>{val[0][`Name`]}</td>
+                <td>{val[0][`Current Tenant`]}</td>
+                <td>{val[0][`House Number`]}</td>
+                <td>{val[0][`Email Address`]}</td>
+                <td>{val[0][`Phone Number`]}</td>
               </tr>
 
             ))}

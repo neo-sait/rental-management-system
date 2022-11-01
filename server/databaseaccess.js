@@ -1,20 +1,21 @@
 //https://firebase.google.com/docs/firestore/query-data/get-data
 
 const { async } = require('@firebase/util');
-const firebase = require('./firebase');
+const firebase = require('./database');
 const firestore = firebase.firestore();
 
 // grabs all documents from a collection, returns in json format
 // param String Collection Name
 // return Object
-async function getAll(collection){
-    let results = {};
-    let list = firestore.collection(collection);
-    let snapshot = await list.get();
+async function getAll(col,orderByAttribute){
+    let list = firestore.collection(col);
+    let snapshot = orderByAttribute == null ?
+    // if orderBy is null
+    await list.get()
+    //if orderBy is not null
+    :await list.orderBy(orderByAttribute).get();
 
-    snapshot.forEach(doc => {
-        results[doc.id] = doc.data();
-      });
+    let results = snapshot.docs.map((doc)=> [doc.data()]);
 
     return results;
 }
@@ -52,6 +53,10 @@ async function set(collection,doc,json){
     }else{
         list.set(json);
     }
+}
+
+async function append(){
+
 }
 
 

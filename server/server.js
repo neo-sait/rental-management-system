@@ -14,6 +14,7 @@ app.post('/login',(req,res) => {
         tenants = result;
 
        for (const tenant in tenants){
+            console.log(tenants[tenant]);
             if (tenants[tenant].Email == email){
                 res.send({id: tenant});
                 console.log("Found tenant with same email, send 200");
@@ -33,5 +34,11 @@ app.post('/api/tenantData',(req,res) =>{
        res.send({email: result.Email, name: result.Name});
     })
 });
+
+app.get('/api/loadTenants',(req,res) =>{
+    firestore.getAll("Tenants","Name").then((result)=>{
+        res.send(result);
+    })
+})
 
 app.listen(5000, () => console.log('Server on port 5000'));

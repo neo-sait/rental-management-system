@@ -1,79 +1,84 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route }  from 'react-router-dom';
+import React, { useState } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
+import {BrowserRouter as Router, Routes, Route, UNSAFE_RouteContext} from "react-router-dom";
+import { AuthProvider } from './components/auth';
+import { RequireAuth} from './components/requireAuth';
 
-import {Navbar, Footer, Sidebar, } from './components';
-import {UserProfile, Payments, Tenants, FAQs, Contacts, Transactions,Import, Login} from './pages';
+import { UserProfile, Payments, Tenants, FAQs, Contacts, Transactions, Import, Login, Error } from './pages';
 import './App.css';
 
-import { useStateContext } from './contexts/ContextProvider';
-
 const App = () => {
-    const {activeMenu} = useStateContext();
-  return (
-    <div>
-      <BrowserRouter>
-        <div className="flex relative 
-        dark:bg-main-dark-bg">
-          
-          <div className="fixed right-4 bottom-4" style={{zIndex:'1000'}}>
-            <TooltipComponent content="Settings" position="Top">
-              <button className="text-3xl p-3
-              hover:drop-shadow-xl
-              hover:bg-light-gray"
-              style={{borderRadius: '50%'}}>
-                <FiSettings/>
-              </button>
-            </TooltipComponent>
-          </div> 
-          {activeMenu ? (
-            <div className="w-72  fixed sidebar
-            dark:bg-secondary-dark-bg
-            bg-white">
-              <Sidebar />
-            </div>
-          ) : (
-            <div className="w-0
-            dark:bg-secondary-dark-bg">
-              <Sidebar />
-            </div>
-          )}
-            <div className={ `dark:bg-main-bg bg-main-bg min-h-screen w-full ${activeMenu ? 'md:ml-72 '
-            : 'flex-2'}`
-          }>
-              <div className="fixed md:static
-              bg-main-bg
-              dark:bg-main-dark-bg navbar w-full">
-                <Navbar />
-              </div>
-
-          <div id="page">
-            <Routes>
-              {/* Dashboards */}
-              <Route path='/' element={<Tenants />} />
-              <Route path='/tenants' element={<Tenants />} />
-              <Route path="/payments" element={<Payments />} />
-              <Route path="/transactions" element={<Transactions />} />
-              {/* Profile Information */}
-              <Route path="/import" element={<Import />} />
-              {/* Profile Information */}
-              <Route path="/profile" element={<UserProfile />} />
-
-              {/* Contact Us */}
-              <Route path="/faqs" element={<FAQs/>} />
-              <Route path="/contacts" element={<Contacts />} />
-
-              <Route path="/login" element={<Login />} />
-
-            </Routes>
-          </div>
-          </div>
-        </div>
-      </BrowserRouter>
-    </div>
+    const [user, setUser] = useState(null);
     
+    return (
+      <AuthProvider>
+      <Router>
+      <Routes>
+         <Route path="/profile/:username" element={
+         //<RequireAuth>
+          <UserProfile /> 
+         // </RequireAuth>
+      } />
+  
+          <Route path="/tenants" element={
+         //<RequireAuth>
+          <Tenants /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/payments" element={
+         //<RequireAuth>
+          <Payments /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/transactions" element={
+         //<RequireAuth>
+          <Transactions /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/import" element={
+         //<RequireAuth>
+          <Import /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/tenants" element={
+         //<RequireAuth>
+          <Tenants /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/profile" element={
+         //<RequireAuth>
+          <UserProfile /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/faqs" element={
+         //<RequireAuth>
+          <FAQs /> 
+         // </RequireAuth>
+         } />
+  
+          <Route path="/contacts" element={
+         //<RequireAuth>
+          <Contacts /> 
+         // </RequireAuth>
+         } />
+  
+  
+  
+       <Route exact path="/login" element={<Login />} />
+       <Route exact path="/" element={<Login />} />
+       <Route exact path="*" element={<Error />} />
+      </Routes>
+     </Router>
+     </AuthProvider>
+
   )
 }
 

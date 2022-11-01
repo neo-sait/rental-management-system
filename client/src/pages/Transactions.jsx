@@ -1,25 +1,25 @@
+import './Transactions.css'
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from '../components';
 import {AiOutlineReload} from 'react-icons/ai';
 
-import { getAll2 } from '../services/databaseaccess';
+//import { getAll2 } from '../services/databaseaccess';
 //import ReactDOM from "react-dom/client";
 
 import { collection, doc, getDocs, addDoc, query, orderBy } from "firebase/firestore";
-import { db } from '../services/database'
-const database = db();
+//import { db } from '../services/database'
+//const database = db();
 var dataArrInit = [];//transactionDetails;
-
-import './Transactions.css'
 
 const writeTest = () => {
 
-  console.log(Array.isArray(dataArr));
-  console.log(dataArr.length);
+  //console.log(Array.isArray(dataArr));
+  //console.log(dataArr.length);
 };
 
 const Transactions = () => {
   const [dataArr, setDataArr] = useState(dataArrInit);
+  /*
   useEffect(async () => {
     console.log('use effect triggered');
     if (dataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
@@ -56,6 +56,8 @@ const Transactions = () => {
 
 
   });
+
+  */
 
   return (
 

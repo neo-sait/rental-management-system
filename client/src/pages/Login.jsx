@@ -18,6 +18,7 @@ const Login = () => {
 
 
     const login = () => {
+        /*
         axios.post('http://localhost:5000/login', {
             email: emailInput
         }).then((response) => {
@@ -33,6 +34,7 @@ const Login = () => {
         }).catch((err) =>{
             console.log(err);
         })
+        */
     }
 
 
