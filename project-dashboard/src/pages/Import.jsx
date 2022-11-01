@@ -34,7 +34,7 @@ const importCSV = () => {
         //responses.data.forEach(e => output.push(e) );
         console.log(output);
         console.log('uploading');
-        output.forEach(element => asyncAdd(element,"Transaction"));
+        output.forEach(element => asyncAdd(element,"TransactionTest"));
         console.log('done');
       }
     });
