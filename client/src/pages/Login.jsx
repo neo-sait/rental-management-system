@@ -1,66 +1,60 @@
 import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../components/auth'
-
-import "./Login.css"
+import axios from 'axios'
+import classes from "./Login.module.css"
 
 const Login = () => {
 
-    const auth = useAuth();
     const navigate = useNavigate();
 
     const [emailInput, setEmailInput] = useState("");
+    const [passInput,setPassInput] = useState("");
 
-    const [popupStyle, setPopup] = useState("hide");
-    const [response, setResponse] = useState("");
+    const [popup, setPopup] = useState(classes.errorHide);
 
     console.log(emailInput);
 
-
     const login = () => {
-        /*
         axios.post('http://localhost:5000/login', {
-            email: emailInput
+            email: emailInput,
+            pass: passInput
         }).then((response) => {
-            if (response.data == "popup") {
-                setPopup("response");
-                setResponse("Incorrect email");
-            } else if (response.status == 200) {
-                setPopup("hide");
-                console.log(response);
-                auth.login(response.data.id);
-                navigate('/profile/' + response.data.id, { replace: true });
+             if (response.status == 200) {
+                if (response.data == false){
+                    setPopup(classes.errorShow);
+                }else{
+                    setPopup(classes.errorHide);
+                    localStorage.setItem("auth",response.data.id);
+                    navigate("/tenants");
+                }
             }
         }).catch((err) =>{
             console.log(err);
         })
-        */
+        
     }
 
-
     return (
-        <div className="App">
+        <div className={classes.App}>
 
-                <div className="login">
+            <div className={classes.Box}>
+                <h1>Login</h1>
 
-                    <h1 className="text-center">Sign in</h1>
-
-                    <div className="needs-validation">
-                        <div className="form-group was-validated">
-                            <label className="form-label" for="email">Email address</label>
-                            <input className="form-control" type="email" id="email" required
-                            onChange={(e) => {
+                <div className={classes.input}>
+                    <label>Email</label>
+                    <input type="email" name="email"  onChange={(e) => {
                                 setEmailInput(e.target.value);
-                            }}
-                            />
-                            <p className={popupStyle}>{response}</p>
-                        </div>
-                        <button className="login-btn" onClick={login}>Submit</button>
-                    </div>
-
+                            }} required/>
+                    <span className={classes.errorHide}>Invalid Credentials</span>
+                    <label>Password</label>
+                    <input type="password" name="password"  onChange={(e) => {
+                                setPassInput(e.target.value);
+                            }} required/>
+                    <span className={popup}>Invalid Credentials</span>
+                    <button onClick={login}>Login</button>
                 </div>
-
-        </div>
+            </div> 
+        </div> 
     )
 }
 

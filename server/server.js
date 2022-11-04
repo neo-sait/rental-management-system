@@ -1,43 +1,73 @@
 const express = require('express');
 const firestore = require('./databaseaccess');
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
 app.post('/login',(req,res) => {
-    let tenants;
     const email = req.body.email;
+    const pass = req.body.pass;
+
+    console.log("called");
 
     firestore.getAll("Tenants").then((result) =>{
-        tenants = result;
+        for (let i = 0; i < result.length; i++){
+            if (result[i][0]["Email Address"] == email.toLowerCase()){
 
-       for (const tenant in tenants){
-            console.log(tenants[tenant]);
-            if (tenants[tenant].Email == email){
-                res.send({id: tenant});
-                console.log("Found tenant with same email, send 200");
-            }else{
-                res.send("popup");
-                console.log("Bad login info, send 404")
+                let passResult = bcrypt.compare(pass,result[i][0]["Password"]).then((match) =>{
+                    if (match){
+                        const salt = bcrypt.genSalt(10, async(err,salt) =>{
+                            const titleHash = await bcrypt.hash(result[i][0]["Title"],salt);
+                            const nameHash = await bcrypt.hash(result[i][0]["Name"],salt);
+                            res.send({id: titleHash, name: nameHash});
+                        });
+                    }else{
+                        res.send(false);
+                    }
+                })
             }
-       }
+        }
     })
 });
 
-app.post('/api/tenantData',(req,res) =>{
-    const tenant = req.body.id
-    let data;
+// for now, hard coded to tenant owner
+app.post('/api/authenticate',(req,res)=>{
+    const id = req.body.id;
 
-    firestore.get("Tenants",tenant).then((result) =>{
-       res.send({email: result.Email, name: result.Name});
+    if (id == null){
+        res.send(false);
+    }else{
+
+    bcrypt.compare("Owner",id).then( (match)=>{
+        if (match){
+            res.send(true);
+        }else{
+            res.send(false);
+        }
     })
-});
+    }
+})
 
 app.get('/api/loadTenants',(req,res) =>{
     firestore.getAll("Tenants","Name").then((result)=>{
         res.send(result);
+    })
+})
+
+app.get('/api/loadTransactions',(req,res) =>{
+    firestore.getAll("TransactionTest","Number").then((result)=>{
+        res.send(result);
+    })
+})
+
+app.post('/api/importCSV',(req,res)=>{
+    const output = req.body.out;
+
+    output.forEach((element) => {
+        console.log(element);
     })
 })
 

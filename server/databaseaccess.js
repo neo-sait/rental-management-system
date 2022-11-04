@@ -38,10 +38,8 @@ async function get(collection, doc){
 // param String Collection Name
 // param String Document Name
 // param Object Document Data
-async function add(collection,doc,json){
-    let list = firestore.collection(collection).doc(doc);
-    let document = await list.get();
-    list.set(json);
+async function add(col,json){
+    firestore.collection(col).add(json);
 }
 
 // virtually the same as the add method, however checks if data exists in the first place
@@ -55,9 +53,11 @@ async function set(collection,doc,json){
     }
 }
 
-async function append(){
-
+// Deletes document from database
+// param String Collection Name
+// param Object Document Name
+async function remove(col,doc){
+    firestore.collection(col).doc(doc).delete();
 }
-
 
 module.exports = {getAll,get,add,set};

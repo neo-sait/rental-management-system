@@ -1,63 +1,59 @@
 import './Transactions.css'
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 import { Sidebar } from '../components';
 import {AiOutlineReload} from 'react-icons/ai';
 
-//import { getAll2 } from '../services/databaseaccess';
-//import ReactDOM from "react-dom/client";
-
-import { collection, doc, getDocs, addDoc, query, orderBy } from "firebase/firestore";
-//import { db } from '../services/database'
-//const database = db();
-var dataArrInit = [];//transactionDetails;
-
-const writeTest = () => {
-
-  //console.log(Array.isArray(dataArr));
-  //console.log(dataArr.length);
-};
+let dataArrInit = [];
 
 const Transactions = () => {
-  const [dataArr, setDataArr] = useState(dataArrInit);
-  /*
-  useEffect(async () => {
-    console.log('use effect triggered');
-    if (dataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
-      dataArrInit = [];
-      //dataArr=[];
-      const q = query(collection(database, "TransactionTest"), orderBy("Number"));
+  let navigate = useNavigate();
+  let auth = localStorage.getItem("auth");
 
-      //const querySnapshot = await getDocs(collection(database, "Transactions"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        console.log('trying');
-        dataArrInit.push(doc.data());
-        //setDataArr((dataArr) => [ ...dataArr , doc.data()]);
-        console.log('data added to array');
-
+  // temporary, soon add hash verification
+  axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+      if (authed.data == false){
+        navigate("/login");
       }
+    })
+  
+  const [dataArr, setDataArr] = useState(dataArrInit)
 
-      );
-      console.log('swapping added to array');
-      console.log('newarr is ' + dataArrInit.length);
+  
+  useEffect(async () => {
+    window.addEventListener('storage', ()=>{
+      let auth = localStorage.getItem("auth");
 
-      //b setDataArr(dataArr =>  [...dataArr,dataArrInit] );
-      setDataArr(dataArrInit);
+      // temporary, soon add hash verification
+      axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+        if (authed.data == false){
+          navigate("/login");
+        }
+      })
+    })    
 
-      console.log('dataarr is ' + dataArr.length);
 
-      localStorage.setItem("docCount", dataArrInit.length);
+    if (dataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
+      dataArrInit = []
+
+      axios.get('http://localhost:5000/api/loadTransactions').then( (res)=>{
+        dataArrInit = res.data;
+
+        console.log('swapping added to array')
+        console.log('newarr is ' + dataArrInit.length)
+
+        setDataArr(dataArrInit)
+
+        console.log('dataarr is ' + dataArr.length)
+
+        localStorage.setItem("docCount", dataArrInit.length)
+      })
+
     } else {
-      localStorage.setItem("docCount", dataArrInit.length);
-
+      localStorage.setItem("docCount", dataArrInit.length)
     }
-
-
-
-
-  });
-
-  */
+  })
 
   return (
 
@@ -97,21 +93,21 @@ const Transactions = () => {
         <tbody>
         {dataArr.map((val) => (
             <tr>
-              <td>{val.Number}</td>
-              <td>{val.Address}</td>
-              <td>{val.HouseNum}</td>
-              <td>{val.Date}</td>
-              <td>{val.DatePaid}</td>
-              <td>{val.Year}</td>
-              <td>{val.Month}</td>
-              <td>{val.YearNum}</td>
-              <td>{val.PayerName}</td>
-              <td>{val.PayerTitle}</td>
-              <td>{val.Payment}</td>
-              <td>{val.PaymentMethod}</td>
-              <td>{val.Desc}</td>
-              <td>{val.Type}</td>
-              <td>{val.Notes}</td>
+              <td>{val[0].Number}</td>
+              <td>{val[0].Address}</td>
+              <td>{val[0].HouseNum}</td>
+              <td>{val[0].Date}</td>
+              <td>{val[0].DatePaid}</td>
+              <td>{val[0].Year}</td>
+              <td>{val[0].Month}</td>
+              <td>{val[0].YearNum}</td>
+              <td>{val[0].PayerName}</td>
+              <td>{val[0].PayerTitle}</td>
+              <td>{val[0].Payment}</td>
+              <td>{val[0].PaymentMethod}</td>
+              <td>{val[0].Desc}</td>
+              <td>{val[0].Type}</td>
+              <td>{val[0].Notes}</td>
             </tr>
           
         ))}
@@ -119,7 +115,6 @@ const Transactions = () => {
       </table>
     </div>
       <div className="items-center gap-2 ml-2 mt-3 flex text-s tracking-tight dark:text-white text-slate-500"><AiOutlineReload/><button onClick="location.reload();">Reload</button></div>
-      <div><button onClick={writeTest}>Arr test</button></div>
     </div>
     
     

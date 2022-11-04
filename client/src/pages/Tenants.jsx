@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../components';
 import ReactDOM from 'react-dom'
 import {AiOutlineReload} from 'react-icons/ai'
@@ -8,26 +9,34 @@ import './Tenants.css'
 let dataArrInit = []
 
 const Tenants = () => {
+  let navigate = useNavigate();
+  let auth = localStorage.getItem("auth");
+
+  // temporary, soon add hash verification
+  axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+    console.log("responsed")
+      if (authed.data == false){
+        navigate("/login");
+      }
+    })
   const [dataArr, setDataArr] = useState(dataArrInit)
 
   
   useEffect(async () => {
-    console.log('use effect triggered')
+
+    window.addEventListener('storage', ()=>{
+      let auth = localStorage.getItem("auth");
+
+      axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+        console.log("responsed")
+        if (authed.data == false){
+          navigate("/login");
+        }
+      })
+    })
+
     if (dataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
       dataArrInit = []
-
-      /*
-      const q = query(collection(database, "Tenants"), orderBy("Name"))
-
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach((doc) => {
-        console.log('trying')
-        dataArrInit.push(doc.data())
-        console.log('data added to array')
-
-      }
-      )
-      */
 
       axios.get('http://localhost:5000/api/loadTenants').then( (res)=>{
         dataArrInit = res.data;
@@ -47,10 +56,7 @@ const Tenants = () => {
     }
   })
 
-  console.log(dataArr);
-
-  return (
-
+  return  (
 
     <div className="App flex">
 

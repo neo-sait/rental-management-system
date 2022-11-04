@@ -1,14 +1,5 @@
 import React, { CSSProperties } from 'react';
-//import {firestore }from '../services/firebase.js';
-//import {collection,doc,getDocs,addDoc} from 'firestore';
-//import 'firebase/compat/auth';
-//import 'firebase/firestore/Timestamp';
-//import {add} from '../services/databaseaccess.js';
-import 'firebase/compat/firestore';
-
-//import {db} from '../services/database';
-//import {asyncAdd,getAll2} from '../services/databaseaccess';
-
+import axios from 'axios'
 import papa from 'papaparse';
 
 let file = null;
@@ -36,10 +27,12 @@ const importCSV = () => {
         //console.log(responses.data.length, responses);
         output = responses.data;
         //responses.data.forEach(e => output.push(e) );
-        console.log(output);
+        //console.log(output);
         console.log('uploading');
-        output.forEach(element => asyncAdd(element,"Transaction"));
-        console.log('done');
+        axios.post('http://localhost:5000/api/importCSV',{out: output}).then((res) =>{
+          console.log('done');
+        });
+        //output.forEach(element => asyncAdd(element,"Transaction"));
       }
     });
     
