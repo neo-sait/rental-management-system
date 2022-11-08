@@ -63,6 +63,7 @@ app.get('/api/loadTransactions',(req,res) =>{
     })
 })
 
+// still developing, res input overload
 app.post('/api/importCSV',(req,res)=>{
     const output = req.body.out;
 
@@ -70,5 +71,18 @@ app.post('/api/importCSV',(req,res)=>{
         console.log(element);
     })
 })
+
+app.get('/api/loadDash',(req,res) =>{
+    firestore.getAll("Transaction").then((result)=>{
+        res.send(result)
+    })
+})
+
+app.get('/api/getList',(req,res)=>{
+    firestore.getAll("Lists").then((result)=>{
+        res.send(result);
+    })
+})
+
 
 app.listen(5000, () => console.log('Server on port 5000'));

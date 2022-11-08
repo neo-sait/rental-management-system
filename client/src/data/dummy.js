@@ -13,6 +13,10 @@ export const links = [
     title: 'Dashboards',
     links: [
       {
+        name: 'Overview',
+        icon: <RiProfileFill />,
+      },
+      {
         name: 'Tenants',
         icon: <FiUsers />,
       },
@@ -24,12 +28,21 @@ export const links = [
         name: 'Transactions',
         icon: <MdHistory />,
       },
+      {
+        name: 'Lists',
+        icon: <MdHistory />,
+      },
 
     ],
   },
   {
     title: 'Import Data',
     links: [
+      {
+        name: 'NewTransaction',
+        icon: <RiProfileFill />,
+      },
+
       {
         name: 'Import',
         icon: <RiProfileFill />,

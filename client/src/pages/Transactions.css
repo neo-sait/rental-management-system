@@ -29,14 +29,14 @@ h2 {
 }
 
 .transactions-table {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: normal;
     border: none;
     border-collapse: collapse;
     width: 100%;
     max-width: 100%;
     white-space: nowrap;
-    background-color:darkgray;
+    background-color:rgba(169, 169, 169, 0.603);
 }
 
 .transactions-table td, .transactions-table th {
@@ -45,9 +45,13 @@ h2 {
 }
 
 .transactions-table td {
-    font-size: 12px;
+    font-size: 14px;
 }
+#num {
+    text-align: left ;
+    padding-left: 34px;
 
+}
 .transactions-table thead{
     color: #ffffff;
     background: #324960;
@@ -56,3 +60,33 @@ h2 {
 .transactions-table tr:nth-child(even) {
     background: #F8F8F8;
 }
+
+
+.hovNote {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .hovNote .hovNoteText  {
+    visibility: hidden;
+    /*width: 120px;*/
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    
+    top: -5px;
+    right: 105%;
+
+   
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .hovNote:hover .hovNoteText {
+    visibility: visible;
+  }

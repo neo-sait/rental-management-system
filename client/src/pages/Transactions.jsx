@@ -8,6 +8,9 @@ import {AiOutlineReload} from 'react-icons/ai';
 let dataArrInit = [];
 
 const Transactions = () => {
+  const [dataArr, setDataArr] = useState(dataArrInit)
+  const [order,setOrder] = useState("asc");
+
   let navigate = useNavigate();
   let auth = localStorage.getItem("auth");
 
@@ -17,15 +20,12 @@ const Transactions = () => {
         navigate("/login");
       }
     })
-  
-  const [dataArr, setDataArr] = useState(dataArrInit)
 
   
   useEffect(async () => {
     window.addEventListener('storage', ()=>{
       let auth = localStorage.getItem("auth");
-
-      // temporary, soon add hash verification
+      
       axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
         if (authed.data == false){
           navigate("/login");
@@ -55,11 +55,40 @@ const Transactions = () => {
     }
   })
 
+  function hoverNote(contains){
+    if(contains !== "" ){
+      return(
+        <div class="hovNote">Note<span class="hovNoteText">{contains}</span></div>
+      );
+    };
+    
+  };
+  // sorts columns of table
+  const sorting = (col) => { 
+    
+
+    if (order === "asc"){
+      const sorted = [...dataArr].sort(
+        (a,b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col]? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
+        );
+      setDataArr(sorted);
+      setOrder("desc");
+    }
+    else if (order === "desc"){
+      const sorted = [...dataArr].sort(
+        (a,b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col]? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
+        );
+      setDataArr(sorted);
+      setOrder("asc");
+    }
+  };
+
   return (
+
 
     <div className="App flex">
 
-      <div className="w-72 fixed sidebar
+      <div className="w-72 sidebar
             dark:bg-secondary-dark-bg
             bg-white">
         <Sidebar />
@@ -73,48 +102,50 @@ const Transactions = () => {
       <table class="transactions-table">
         <thead>
           <tr>
-          <th>Num</th>
-          <th>Address</th>
-          <th>House #</th>
-          <th>Date</th>
-          <th>Date Paid</th>
-          <th>Year</th>
-          <th>Month</th>
-          <th>Year #</th>
-          <th>Name</th>
-          <th>Title</th>
-          <th>Payment</th>
-          <th>Method</th>
-          <th>Desc</th>
-          <th>Type</th>
-          <th>Notes</th>
+            <th onClick={()=>sorting("Number")}>Num</th>
+            <th onClick={()=>sorting("Address")}>Address</th>
+            <th onClick={()=>sorting("HouseNum")}>House #</th>
+            <th onClick={()=>sorting("Date")}>Date</th>
+            <th onClick={()=>sorting("DatePaid")}>Date Paid</th>
+           {/*  <th onClick={()=>sorting("Year")}>Year</th>
+            <th>Month</th>
+            <th onClick={()=>sorting("YearNum")}>Year #</th>*/ } 
+            <th onClick={()=>sorting("PayerName")}>Name</th>
+            <th onClick={()=>sorting("PayerTitle")}>Title</th>
+            <th onClick={()=>sorting("Payment")}>Payment</th>
+            <th onClick={()=>sorting("PaymentMethod")}>Method</th>
+            <th onClick={()=>sorting("Desc")}>Desc</th>
+            <th onClick={()=>sorting("Type")}>Type</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
         {dataArr.map((val) => (
             <tr>
-              <td>{val[0].Number}</td>
+              <td id='num'>{val[0].Number}</td>
               <td>{val[0].Address}</td>
-              <td>{val[0].HouseNum}</td>
+              <td id='num'>{val[0].HouseNum}</td>
               <td>{val[0].Date}</td>
               <td>{val[0].DatePaid}</td>
-              <td>{val[0].Year}</td>
-              <td>{val[0].Month}</td>
-              <td>{val[0].YearNum}</td>
+             {/* <td id='num'>{val.Year}</td>
+              <td id='num'>{val.Month}</td>
+              <td id='num'>{val.YearNum}</td>
+              columns not needed for user to see*/ } 
               <td>{val[0].PayerName}</td>
               <td>{val[0].PayerTitle}</td>
-              <td>{val[0].Payment}</td>
+              <td id='num'>{val[0].Payment}</td>
               <td>{val[0].PaymentMethod}</td>
               <td>{val[0].Desc}</td>
               <td>{val[0].Type}</td>
-              <td>{val[0].Notes}</td>
+              <td>{hoverNote(val[0].Notes)}</td>
             </tr>
           
         ))}
       </tbody>
       </table>
     </div>
-      <div className="items-center gap-2 ml-2 mt-3 flex text-s tracking-tight dark:text-white text-slate-500"><AiOutlineReload/><button onClick="location.reload();">Reload</button></div>
+      <div className="items-center gap-2 ml-2 mt-3 flex text-s tracking-tight dark:text-white text-slate-500"><AiOutlineReload/><button onClick="this.forceUpdate();">Reload</button></div>
+      
     </div>
     
     

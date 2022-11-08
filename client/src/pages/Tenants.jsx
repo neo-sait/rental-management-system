@@ -60,11 +60,11 @@ const Tenants = () => {
 
     <div className="App flex">
 
-      <div className="w-72 fixed sidebar
-            dark:bg-secondary-dark-bg
-            bg-white">
+    <div className="w-72 sidebar
+        dark:bg-secondary-dark-bg
+        bg-white shadow-2xl">
         <Sidebar />
-      </div>
+    </div>
 
       <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
       <div >

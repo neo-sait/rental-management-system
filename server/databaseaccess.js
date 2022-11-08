@@ -15,7 +15,7 @@ async function getAll(col,orderByAttribute){
     //if orderBy is not null
     :await list.orderBy(orderByAttribute).get();
 
-    let results = snapshot.docs.map((doc)=> [doc.data()]);
+    let results = snapshot.docs.map((doc)=> [doc.data(),doc.id]);
 
     return results;
 }

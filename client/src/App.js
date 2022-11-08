@@ -4,7 +4,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import {BrowserRouter as Router, Routes, Route, UNSAFE_RouteContext} from "react-router-dom";
 
-import { UserProfile, Payments, Tenants, FAQs, Contacts, Transactions, Import, Login, Error } from './pages';
+import { UserProfile, Payments, Tenants, FAQs, Contacts, Transactions, Import, Login, Error, NewTransaction, Overview, Lists } from './pages';
 import './App.css';
 
 const App = () => {
@@ -13,9 +13,6 @@ const App = () => {
     return (
       <Router>
       <Routes>
-         <Route path="/profile/:username" element={
-          <UserProfile /> 
-      } />
   
           <Route path="/tenants" element={
           <Tenants /> 
@@ -47,6 +44,18 @@ const App = () => {
   
           <Route path="/contacts" element={
           <Contacts /> 
+         } />
+
+        <Route path="/newtransaction" element={
+          <NewTransaction /> 
+         } />
+
+        <Route path="/overview" element={
+          <Overview /> 
+         } />
+
+        <Route path="/lists" element={
+          <Lists /> 
          } />
   
   

@@ -2,17 +2,17 @@ import React from 'react'
 import { Sidebar } from '../components';
 import "./Payments.css"
 
-const Payments = () => {
+const NewTransaction = () => {
   return (
     <div className="App flex">
 
-      <div className="w-72 fixed sidebar
+      <div className="w-72 sidebar
             dark:bg-secondary-dark-bg
             bg-white">
         <Sidebar />
       </div>
 
-      <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ml-72">
+      <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
       <div id="container">
         <div id='rect'>
         <ul>
@@ -47,41 +47,22 @@ const Payments = () => {
             <option value="audi">Audi</option>
           </select>
           <select name="fourth" id="fourth">
-            <option value="vals">  </option>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+            
+
           </select>
           <br></br>
           <select name="fifth" id="fifth">
-            <option value="vals">  </option>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+            
           </select>
           <select name="sixth" id="sixth">
-            <option value="vals">  </option>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+          
           </select>
           <br></br>
           <select name="seventh" id="seventh">
-            <option value="vals">  </option>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+            
           </select>
           <select name="eigth" id="eigth">
-            <option value="vals">  </option>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+           
           </select>
           <br></br>
           <br></br>
@@ -99,4 +80,4 @@ const Payments = () => {
   )
 }
 
-export default Payments
+export default NewTransaction

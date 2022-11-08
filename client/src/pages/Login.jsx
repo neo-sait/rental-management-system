@@ -12,7 +12,13 @@ const Login = () => {
 
     const [popup, setPopup] = useState(classes.errorHide);
 
-    console.log(emailInput);
+    let auth = localStorage.getItem("auth");
+      
+    axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+      if (authed.data == true){
+        navigate("/tenants");
+      }
+    })
 
     const login = () => {
         axios.post('http://localhost:5000/login', {
