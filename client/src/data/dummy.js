@@ -21,10 +21,6 @@ export const links = [
         icon: <FiUsers />,
       },
       {
-        name: 'Payments',
-        icon: <MdHistory />,
-      },
-      {
         name: 'Transactions',
         icon: <MdHistory />,
       },

@@ -4,7 +4,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: 1000000}));
 app.use(cors());
 
 app.post('/login',(req,res) => {
@@ -67,9 +67,8 @@ app.get('/api/loadTransactions',(req,res) =>{
 app.post('/api/importCSV',(req,res)=>{
     const output = req.body.out;
 
-    output.forEach((element) => {
-        console.log(element);
-    })
+    output.forEach(element => firestore.add("TranTest",element));
+    res.send(true);
 })
 
 app.get('/api/loadDash',(req,res) =>{

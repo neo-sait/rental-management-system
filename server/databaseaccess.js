@@ -15,10 +15,22 @@ async function getAll(col,orderByAttribute){
     //if orderBy is not null
     :await list.orderBy(orderByAttribute).get();
 
-    let results = snapshot.docs.map((doc)=> [doc.data(),doc.id]);
+    let results = snapshot.docs.map((doc)=> [doc.data(), doc.id]);
 
     return results;
 }
+
+/*
+export async function getAll2(coll) {
+    var results = []
+    const querySnapshot = await getDocs(collection(database, coll))
+    querySnapshot.forEach((doc) => {
+      results.push({ ...doc.data(), id: doc.id })
+      console.log("data added to array")
+    })
+    return results
+  }
+*/
 
 // returns a single data object specified by collection and doc
 // param String Collection Name

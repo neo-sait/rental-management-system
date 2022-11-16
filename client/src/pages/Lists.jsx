@@ -28,6 +28,8 @@ const Lists = () => {
   const [paymentDataArr, setPaymentDataArr] = useState(paymentDataArrInit)
   const [newAddress, setNewAddress] = useState("")
 
+  const count = "listsCount";
+
   const addAddress = async () => {
     console.log("attempting to add new Address")
     //await addDoc(collection(database, "Lists"), {Address: newAddress})
@@ -35,8 +37,8 @@ const Lists = () => {
   }
 
   useEffect(async () => {
-    if (listsDataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
-      console.log("Initial doc count:" + localStorage.getItem("docCount"))
+    if (listsDataArrInit.length != parseInt(localStorage.getItem(count))) {
+      console.log("Initial doc count:" + localStorage.getItem(count))
       listsDataArrInit = []
       addressDataArrInit = []
       payerDataArrInit = []
@@ -86,11 +88,11 @@ const Lists = () => {
         setTitleDataArr(titleDataArrInit)
         setPaymentDataArr(paymentDataArrInit)
   
-        localStorage.setItem("docCount", listsDataArrInit.length)
-        console.log("final doc count:" + localStorage.getItem("docCount"))
+        localStorage.setItem(count, listsDataArrInit.length)
+        console.log("final doc count:" + localStorage.getItem(count))
       })
     }else {
-      localStorage.setItem("docCount", listsDataArrInit.length)
+      localStorage.setItem(count, listsDataArrInit.length)
 
     }
   })

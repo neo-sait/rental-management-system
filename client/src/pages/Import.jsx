@@ -1,64 +1,78 @@
 import React, { CSSProperties } from 'react';
+import { Sidebar } from '../components';
 import axios from 'axios'
 import papa from 'papaparse';
+import classes from "./Import.module.css"
 
 let file = null;
 var dataArr = [];
 let output = [];
-//const database = db();
 
 const handleChange = ({ target: { files } }) => {
   file = files[0];
+  let display = document.getElementById("display");
+  display.innerHTML = files[0].name;
+  console.log(files);
 };
-//const colRef = collection(firestore,'Transactions')
+
 const importCSV = () => {
 
-    function asyncAdd(){
-
-    }
-    
+  if (file != null){
+    let display = document.getElementById("display");
     console.log(file, "file");
     dataArr = papa.parse(file, {
       delimiter: "",
       chunkSize: 3,
       header: true,
-      complete: function(responses) {
+      complete: function (responses) {
         console.log(responses.data.length)
-        //console.log(responses.data.length, responses);
         output = responses.data;
-        //responses.data.forEach(e => output.push(e) );
-        //console.log(output);
-        console.log('uploading');
-        axios.post('http://localhost:5000/api/importCSV',{out: output}).then((res) =>{
-          console.log('done');
-        });
-        //output.forEach(element => asyncAdd(element,"Transaction"));
-      }
-    });
-    
-    
-  };
   
-  let i = 0;
-  const writeTest = () => {
-        //var money = '$1,200.01';
-       // console.log( parseFloat(money.substring(1).replace(',','')) );
-        //console.log(parseInt(output[i].Month));
-        //asyncAdd(output[i],"Transactions")
-        i+=50;
-        console.log("uploaded index "+ i);
-  };
-
-
+        // express has a limit on sending data through post requests, the idea is to seperate the imported dataset into chunks
+        // this should allow YEARS of archived data to be sent through with ease, regardless if the size exceeds the limit.
+        let chunkSize = 100;
+  
+        for (let i = 0; i < output.length; i += chunkSize) {
+          const chunk = output.slice(i, i + chunkSize);
+  
+          /*
+          axios.post('http://localhost:5000/api/importCSV', { out: chunk }).then((res) => {
+            console.log(res.data);
+          });
+          */
+        }
+        
+        // reset frontend logic
+        file = null;
+        display.innerHTML = "Select CSV File";
+        window.alert("Transaction data successfully imported");
+      }
+    });  
+  }else{
+    window.alert("No CSV file selected");
+  }
+};
 
 const Import = () => {
-    
+
   return (
-    <div>
-         <input type="file" id="csv-file" accept=".csv" onChange={handleChange}></input>
-         <button onClick={importCSV}>Click Me</button>
-         <div><button onClick={writeTest}>write test</button></div>
-         
+
+    <div className="App flex">
+
+      <div className="w-72 sidebar
+        dark:bg-secondary-dark-bg
+        bg-white shadow-2xl">
+        <Sidebar />
+      </div>
+
+      <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
+      <div className={classes.container}>
+        <h1 className={classes.title}>Import Transaction CSV File</h1>
+      <input type="file" id="import" className={classes.import} accept=".csv" onChange={handleChange}></input>
+      <label for="import" id="display" className={classes.display}>Select CSV File</label>
+      <button className={classes.importbtn} onClick={importCSV}>Import CSV</button>
+      </div>
+      </div>
     </div>
   )
 }

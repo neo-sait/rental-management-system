@@ -10,8 +10,9 @@ let dataArrInit = [];
 const Transactions = () => {
   const [dataArr, setDataArr] = useState(dataArrInit)
   const [order,setOrder] = useState("asc");
+  const navigate = useNavigate();
+  const count = "transactionsCount";
 
-  let navigate = useNavigate();
   let auth = localStorage.getItem("auth");
 
   // temporary, soon add hash verification
@@ -34,7 +35,7 @@ const Transactions = () => {
     })    
 
 
-    if (dataArrInit.length != parseInt(localStorage.getItem("docCount"))) {
+    if (dataArrInit.length != parseInt(localStorage.getItem(count))) {
       dataArrInit = []
 
       axios.get('http://localhost:5000/api/loadTransactions').then( (res)=>{
@@ -47,11 +48,11 @@ const Transactions = () => {
 
         console.log('dataarr is ' + dataArr.length)
 
-        localStorage.setItem("docCount", dataArrInit.length)
+        localStorage.setItem(count, dataArrInit.length)
       })
 
     } else {
-      localStorage.setItem("docCount", dataArrInit.length)
+      localStorage.setItem(count, dataArrInit.length)
     }
   })
 
