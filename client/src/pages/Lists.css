@@ -37,6 +37,11 @@ input {
 	float: left;
 }
 
+input:read-only{
+	border: none;
+	background-color: #e4e4e4;
+}
+
 .Add {
 	font-weight: 800;
 	font-style: normal;
@@ -114,4 +119,8 @@ input {
 
 .Lists-table tr:nth-child(even) {
 	background: #f8f8f8;
+}
+
+.listInput::placeholder{
+	color: black;
 }

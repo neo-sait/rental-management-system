@@ -83,5 +83,12 @@ app.get('/api/getList',(req,res)=>{
     })
 })
 
+app.post('/api/addToAddressList',(req,res)=>{
+    const address = req.body.address;
+
+    firestore.add("Lists",{Address: address});
+    res.send(true);
+})
+
 
 app.listen(5000, () => console.log('Server on port 5000'));

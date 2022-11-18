@@ -26,14 +26,36 @@ const Lists = () => {
   const [typeDataArr, setTypeDataArr] = useState(typeDataArrInit)
   const [titleDataArr, setTitleDataArr] = useState(titleDataArrInit)
   const [paymentDataArr, setPaymentDataArr] = useState(paymentDataArrInit)
-  const [newAddress, setNewAddress] = useState("")
+
+  const [newInput, setNewInput] = useState("")
 
   const count = "listsCount";
 
-  const addAddress = async () => {
-    console.log("attempting to add new Address")
-    //await addDoc(collection(database, "Lists"), {Address: newAddress})
-    console.log("added new Address")
+  const addAddress = event => {
+    let input = document.getElementById("addressInput");
+
+    event.preventDefault()
+
+    /*
+    axios.post('http://localhost:5000/api/addToAddressList', {address: input.value}).then((res) =>{
+      console.log(input.value + " added to database");
+      document.getElementById("addAddress").reset();
+    });
+    */
+  }
+
+  const editInput = (id) =>{
+    let element = document.getElementById("edit"+id);
+
+    if (element.innerHTML == "Save"){
+      element.innerHTML = "Edit";
+      document.getElementById("input"+id).readOnly = true;
+      
+    }else{
+      element.innerHTML = "Save";
+      document.getElementById("input"+id).readOnly = false;
+      
+    }
   }
 
   useEffect(async () => {
@@ -93,7 +115,6 @@ const Lists = () => {
       })
     }else {
       localStorage.setItem(count, listsDataArrInit.length)
-
     }
   })
 
@@ -123,21 +144,19 @@ const Lists = () => {
           <tbody>
             <tr>
               <td>
-                <form id="addAddress">
-                  <input type="text" name="address" placeholder="New Address" onChange={(event) => {
-                    event.preventDefault()
-                    setNewAddress(event.target.value)
-                  }}></input>
-                  <button className="Add" onClick={addAddress}>Add</button>
+                <form id="addAddress" onSubmit={addAddress}>
+                  <input type="text" id="addressInput" placeholder="New Address"></input>
+                  <button className="Add">Add</button>
                 </form>
               </td>
             </tr>
             {addressDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val.Address}
-                  <button className="Edit">Edit</button>
-                  <button className="Delete">Delete</button>
+                <td>
+                  <input type="text" className="listInput" placeholder={val.Address} id={"input"+val.id} readOnly></input>
+                  <button className="Edit" id={"edit"+val.id} onClick={ () => {editInput(val.id)}}>Edit</button>
+                  <button className="Delete" id={"delete"+val.id}>Delete</button>
                 </td>
               </tr>
 
@@ -162,7 +181,8 @@ const Lists = () => {
             {payerDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val[`Payer Name`]}
+                <td>
+                <input type="text" className="listInput" value={val[`Payer Name`]} readOnly></input>
                   <button className="Edit">Edit</button>
                   <button className="Delete">Delete</button>
                 </td>
@@ -189,7 +209,8 @@ const Lists = () => {
             {houseDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val[`House Number`]}
+                <td>
+                <input type="text" className="listInput" value={val[`House Number`]} readOnly></input>
                   <button className="Edit">Edit</button>
                   <button className="Delete">Delete</button>
                 </td>
@@ -216,7 +237,8 @@ const Lists = () => {
             {descriptionDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val[`Description`]}
+                <td>
+                <input type="text" className="listInput" value={val[`Description`]} readOnly></input>
                   <button className="Edit">Edit</button>
                   <button className="Delete">Delete</button>
                 </td>
@@ -243,7 +265,8 @@ const Lists = () => {
             {typeDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val[`Type`]}
+                <td>
+                <input type="text" className="listInput" value={val[`Type`]} readOnly></input>
                   <button className="Edit">Edit</button>
                   <button className="Delete">Delete</button>
                 </td>
@@ -270,7 +293,8 @@ const Lists = () => {
             {titleDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val[`Title`]}
+                <td>
+                <input type="text" className="listInput" value={val[`Title`]} readOnly></input>
                   <button className="Edit">Edit</button>
                   <button className="Delete">Delete</button>
                 </td>
@@ -297,7 +321,8 @@ const Lists = () => {
             {paymentDataArr.map((val) => (
 
               <tr key={val.id}>
-                <td>{val[`Payment Method`]}
+                <td>
+                <input type="text" className="listInput" value={val[`Payment Method`]} readOnly></input>
                   <button className="Edit">Edit</button>
                   <button className="Delete">Delete</button>
                 </td>
