@@ -59,8 +59,8 @@ const Login = () => {
                     <span className={popup}>Invalid Credentials</span>
                     <button onClick={login}>Login</button>
                 </div>
-            </div> 
-        </div> 
+            </div>
+        </div>
     )
 }
 

@@ -53,10 +53,10 @@ label{
 }
 
 input{
-	width: 100%;
+	width: 50px;
 	height: 30px;
 	background-color: rgb(245,245,245);
-	box-shadow: 1px 1px 3px  0.14px rgba(0,0,0,0.2) ;
+	box-shadow: 1px 1px 3px  0.14px rgba(0,0,0,0.2);
 }
 
 button{
