@@ -20,18 +20,6 @@ async function getAll(col,orderByAttribute){
     return results;
 }
 
-/*
-export async function getAll2(coll) {
-    var results = []
-    const querySnapshot = await getDocs(collection(database, coll))
-    querySnapshot.forEach((doc) => {
-      results.push({ ...doc.data(), id: doc.id })
-      console.log("data added to array")
-    })
-    return results
-  }
-*/
-
 // returns a single data object specified by collection and doc
 // param String Collection Name
 // param String Document Name
@@ -51,7 +39,8 @@ async function get(collection, doc){
 // param String Document Name
 // param Object Document Data
 async function add(col,json){
-    firestore.collection(col).add(json);
+    const res = firestore.collection(col).add(json);
+    return [(await res).id, json];
 }
 
 // virtually the same as the add method, however checks if data exists in the first place
@@ -72,4 +61,4 @@ async function remove(col,doc){
     firestore.collection(col).doc(doc).delete();
 }
 
-module.exports = {getAll,get,add,set};
+module.exports = {getAll,get,add,set,remove};

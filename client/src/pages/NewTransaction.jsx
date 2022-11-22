@@ -1,6 +1,6 @@
 import React from 'react'
 import { Sidebar } from '../components';
-import "./Payments.css"
+import classes from "./NewTransaction.css"
 
 const NewTransaction = () => {
   return (

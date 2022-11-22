@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../components';
 import ReactDOM from 'react-dom'
 import { AiOutlineReload } from 'react-icons/ai'
-import './Tenants.css'
+import classes from './Tenants.css'
 
 let dataArrInit = []
 

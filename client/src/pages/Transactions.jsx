@@ -1,4 +1,4 @@
-import './Transactions.css'
+import classes from './Transactions.css'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';

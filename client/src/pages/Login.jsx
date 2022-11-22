@@ -1,16 +1,15 @@
 import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import classes from "./Login.module.css"
+import styles from "./Login.module.css"
 
 const Login = () => {
 
     const navigate = useNavigate();
 
-    const [emailInput, setEmailInput] = useState("");
-    const [passInput,setPassInput] = useState("");
-
-    const [popup, setPopup] = useState(classes.errorHide);
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
+    const [error, setError] = useState("");
 
     let auth = localStorage.getItem("auth");
       
@@ -20,16 +19,18 @@ const Login = () => {
       }
     })
 
-    const login = () => {
+    const login = event => {
+        console.log("logging in")
         axios.post('http://localhost:5000/login', {
-            email: emailInput,
-            pass: passInput
+            email: email,
+            pass: password
         }).then((response) => {
              if (response.status == 200) {
                 if (response.data == false){
-                    setPopup(classes.errorShow);
+                    console.log("bad")
+                    setError("Email or password invalid")
                 }else{
-                    setPopup(classes.errorHide);
+                    console.log("good")
                     localStorage.setItem("auth",response.data.id);
                     navigate("/tenants");
                 }
@@ -40,25 +41,30 @@ const Login = () => {
         
     }
 
-    return (
-        <div className={classes.App}>
-
-            <div className={classes.Box}>
-                <h1>Login</h1>
-
-                <div className={classes.input}>
-                    <label>Email</label>
-                    <input type="email" name="email"  onChange={(e) => {
-                                setEmailInput(e.target.value);
-                            }} required/>
-                    <span className={classes.errorHide}>Invalid Credentials</span>
-                    <label>Password</label>
-                    <input type="password" name="password"  onChange={(e) => {
-                                setPassInput(e.target.value);
-                            }} required/>
-                    <span className={popup}>Invalid Credentials</span>
-                    <button onClick={login}>Login</button>
+    /*
+                   <div className={classes.inputGroup}>
+                    <input type="email" placeholder="Email" id="email" required></input>
                 </div>
+                <div className={classes.inputGroup}>
+                    <input type="password" placeholder="Password" id="password"></input>
+                    <div className={classes.error}>{error}</div>
+                </div>
+                <button className={classes.formButton} type="submit">Login</button>
+    */
+
+    return (
+        <div className={styles.App}>
+            
+            <div className={styles.box}>
+                <h1>Login</h1>
+                <div className={styles.inputGroup}> 
+                    <input type="email" placeholder="Email" onChange={e=>{ setEmail(e.target.value) }}></input>
+                </div>
+                <div className={styles.inputGroup}> 
+                    <input type="password" placeholder="Password" onChange={e=>{ setPassword(e.target.value) }}></input>
+                    <div className={styles.error}>{error}</div>
+                </div>
+                <button className={styles.formButton} type="submit" onClick={ ()=> {login()}}>Login</button>
             </div>
         </div>
     )
