@@ -1,6 +1,6 @@
 import React from 'react'
 import { Sidebar } from '../components';
-import classes from "./NewTransaction.css"
+import "./style.css"
 
 const NewTransaction = () => {
   return (
@@ -12,9 +12,9 @@ const NewTransaction = () => {
         <Sidebar />
       </div>
 
-      <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
-      <div id="container">
-        <div id='rect'>
+      <div className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
+      <div className="newtrans__container">
+        <div className='newtrans__rect'>
         <ul>
             <li><button>+</button></li>
             <li><button>+</button></li>
@@ -22,16 +22,16 @@ const NewTransaction = () => {
             <li><button>+</button></li>
         </ul>
         </div>
-        <form action="Submit" id='Payment_form'>
-          <h1>New Transaction</h1>
-          <select name="first" id="first">
+        <form action="Submit" className='newtrans__paymentform'>
+          <h1 className="newtrans__h1">New Transaction</h1>
+          <select className="newtrans__select" name="first" id="first">
             <option value="vals">  </option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="opel">Opel</option>
             <option value="audi">Audi</option>
           </select>
-          <select name="second" id="second">
+          <select className="newtrans__select" name="second" id="second">
             <option value="vals">  </option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
@@ -39,35 +39,35 @@ const NewTransaction = () => {
             <option value="audi">Audi</option>
           </select>
           <br></br>
-          <select name="third" id="third">
+          <select className="newtrans__select" name="third" id="third">
             <option value="vals">  </option>
             <option value="volvo">Volvo</option>
             <option value="saab">Saab</option>
             <option value="opel">Opel</option>
             <option value="audi">Audi</option>
           </select>
-          <select name="fourth" id="fourth">
+          <select className="newtrans__select" name="fourth" id="fourth">
             
 
           </select>
           <br></br>
-          <select name="fifth" id="fifth">
+          <select className="newtrans__select" name="fifth" id="fifth">
             
           </select>
-          <select name="sixth" id="sixth">
+          <select className="newtrans__select" name="sixth" id="sixth">
           
           </select>
           <br></br>
-          <select name="seventh" id="seventh">
+          <select className="newtrans__select" name="seventh" id="seventh">
             
           </select>
-          <select name="eigth" id="eigth">
+          <select className="newtrans__select" name="eigth" id="eigth">
            
           </select>
           <br></br>
           <br></br>
           <br></br>
-          <div id='form_button'>
+          <div className='newtrans__formButton'>
             <ul>
               <li><button>Clear</button></li>
               <li><button>Submit</button></li>

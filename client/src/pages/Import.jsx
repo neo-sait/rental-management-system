@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import { Sidebar } from '../components';
 import axios from 'axios'
 import papa from 'papaparse';
-import classes from "./Import.module.css"
+import "./style.css"
 
 let file = null;
 var dataArr = [];
@@ -53,6 +53,7 @@ const importCSV = () => {
   }
 };
 
+
 const Import = () => {
 
   return (
@@ -66,11 +67,11 @@ const Import = () => {
       </div>
 
       <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
-      <div className={classes.container}>
-        <h1 className={classes.title}>Import Transaction CSV File</h1>
-      <input type="file" id="import" className={classes.import} accept=".csv" onChange={handleChange}></input>
-      <label for="import" id="display" className={classes.display}>Select CSV File</label>
-      <button className={classes.importbtn} onClick={importCSV}>Import CSV</button>
+      <div className="import__container">
+        <h1 className="import__title">Import Transaction CSV File</h1>
+      <input type="file" id="import" className="import__input" accept=".csv" onChange={handleChange}></input>
+      <label for="import" id="display" className="import__display">Select CSV File</label>
+      <button className="import__btn" onClick={importCSV}>Import CSV</button>
       </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import classes from './Transactions.css'
+import './style.css'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
@@ -15,7 +15,6 @@ const Transactions = () => {
 
   let auth = localStorage.getItem("auth");
 
-  // temporary, soon add hash verification
   axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
       if (authed.data == false){
         navigate("/login");
@@ -59,7 +58,7 @@ const Transactions = () => {
   function hoverNote(contains){
     if(contains !== "" ){
       return(
-        <div class="hovNote">Note<span class="hovNoteText">{contains}</span></div>
+        <div className="trans__hovNote">Note<span className="trans__hovNoteText">{contains}</span></div>
       );
     };
     
@@ -98,9 +97,9 @@ const Transactions = () => {
       <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
               
       <div>
-        <h2>Transactions History</h2>
-      <div class="container">
-      <table class="transactions-table">
+        <h2 className="trans__h2">Transactions History</h2>
+      <div className="container">
+      <table className="trans__table">
         <thead>
           <tr>
             <th onClick={()=>sorting("Number")}>Num</th>
@@ -123,9 +122,9 @@ const Transactions = () => {
         <tbody>
         {dataArr.map((val) => (
             <tr>
-              <td id='num'>{val[0].Number}</td>
+              <td className="trans__num">{val[0].Number}</td>
               <td>{val[0].Address}</td>
-              <td id='num'>{val[0].HouseNum}</td>
+              <td className="trans__num">{val[0].HouseNum}</td>
               <td>{val[0].Date}</td>
               <td>{val[0].DatePaid}</td>
              {/* <td id='num'>{val.Year}</td>
@@ -134,7 +133,7 @@ const Transactions = () => {
               columns not needed for user to see*/ } 
               <td>{val[0].PayerName}</td>
               <td>{val[0].PayerTitle}</td>
-              <td id='num'>{val[0].Payment}</td>
+              <td className="trans__num">{val[0].Payment}</td>
               <td>{val[0].PaymentMethod}</td>
               <td>{val[0].Desc}</td>
               <td>{val[0].Type}</td>

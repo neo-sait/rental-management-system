@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../components';
 import ReactDOM from 'react-dom'
 import { AiOutlineReload } from 'react-icons/ai'
-import classes from './Tenants.css'
+import './style.css'
 
 let dataArrInit = []
 
@@ -67,11 +67,11 @@ const Tenants = () => {
         <Sidebar />
       </div>
 
-      <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
+      <div className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
         <div >
-          <h2>Tenants</h2>
+          <h2 className="ten__h2">Tenants</h2>
           <div class="container">
-            <table class="tenants-table">
+            <table class="ten__table">
               <thead>
                 <tr>
                   <th>Name</th>

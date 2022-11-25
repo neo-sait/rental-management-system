@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import {AiOutlineReload} from 'react-icons/ai'
 import axios from 'axios';
 import { Sidebar } from '../components';
-import classes from './Lists.css'
+import "./style.css"
 import { throws } from 'assert';
 
 // this is the class component version of the OldLists.jsx
@@ -53,31 +53,41 @@ class Lists extends Component{
           const entry = event.target[0];
           const source = event.target[0].name;
 
-          
-          axios.post('http://localhost:5000/api/addToLists',{listType: source, input: entry.value}).then( res =>{
-            const data = res.data;
-            let json;
-          
-            if (source == "address"){
-              json = {Address: entry.value, id: data[0]};
-            }else if (source == "payer"){
-              json = {"Payer Name": entry.value, id: data[0]};
-            }else if (source == "house"){
-              json = {"House Number": entry.value, id: data[0]};
-            }else if (source == "desc"){
-              json = {Description: entry.value, id: data[0]};
-            }else if (source == "type") {
-              json = {Type: entry.value, id: data[0]};
-            }else if (source == "title") {
-              json = {Title: entry.value, id: data[0]};
-            }else if (source == "payment"){
-              json = {"Payment Method": entry.value, id: data[0]};
-            }
-
-            this.appendToList(source,json);
-
-            event.target[0].value = "";
-          })
+          if (entry.value.length > 0){
+            axios.post('http://localhost:5000/api/addToLists',{listType: source, input: entry.value}).then( res =>{
+              const data = res.data;
+              let json;
+            
+              if (source == "address"){
+                json = {Address: entry.value, id: data[0]};
+                window.alert("Address data successfully added");
+              }else if (source == "payer"){
+                json = {"Payer Name": entry.value, id: data[0]};
+                window.alert("Payer data successfully added");
+              }else if (source == "house"){
+                json = {"House Number": entry.value, id: data[0]};
+                window.alert("House data successfully added");
+              }else if (source == "desc"){
+                json = {Description: entry.value, id: data[0]};
+                window.alert("Description data successfully added");
+              }else if (source == "type") {
+                json = {Type: entry.value, id: data[0]};
+                window.alert("Type data successfully added");
+              }else if (source == "title") {
+                json = {Title: entry.value, id: data[0]};
+                window.alert("Title data successfully added");
+              }else if (source == "payment"){
+                json = {"Payment Method": entry.value, id: data[0]};
+                window.alert("Payment data successfully added");
+              }
+  
+              this.appendToList(source,json);
+  
+              event.target[0].value = "";
+            })
+          }else{
+            window.alert("Input needs a value before adding.");
+          }
         }
 
         this.deleteList = (type,id) => {
@@ -172,11 +182,11 @@ class Lists extends Component{
         <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
     
         <div>
-          <h2>Lists</h2>
+          <h2 className="list__h2">Lists</h2>
     
-          <div className="container">
+          <div className="list__container">
     
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>Addresses</th>
@@ -187,7 +197,7 @@ class Lists extends Component{
                   <td>
                     <form id="addAddress" onSubmit={this.addSubmit}>
                       <input type="text" name="address" placeholder="New Address"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -195,16 +205,16 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                      <input type="text" className="listInput" placeholder={val.Address} id={"input"+val.id} readOnly></input>
-                      <button className="Edit" id={"edit"+val.id} onClick={ () => {this.editInput("address",val.id)}}>Edit</button>
-                      <button className="Delete" id={"delete"+val.id} onClick={() => {this.deleteList("address",val.id)}}>Delete</button>
+                      <input type="text" className="list__input" placeholder={val.Address} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("address",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("address",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
                 ))}
               </tbody>
             </table>
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>Payer Names</th>
@@ -215,7 +225,7 @@ class Lists extends Component{
                   <td>
                     <form id="addPayer" onSubmit={this.addSubmit}>
                       <input type="text" name="payer" placeholder="New Payer Name"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -223,16 +233,16 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="listInput" value={val[`Payer Name`]} readOnly></input>
-                      <button className="Edit" onClick={ () => {this.editInput("payer",val.id)}}>Edit</button>
-                      <button className="Delete" onClick={() => {this.deleteList("payer",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" value={val[`Payer Name`]} readOnly></input>
+                      <button className="list__edit" onClick={ () => {this.editInput("payer",val.id)}}>Edit</button>
+                      <button className="list__delete" onClick={() => {this.deleteList("payer",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
                 ))}
               </tbody>
             </table>
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>House Numbers</th>
@@ -243,7 +253,7 @@ class Lists extends Component{
                   <td>
                     <form id="addHouse" onSubmit={this.addSubmit}>
                       <input type="text" name="house" placeholder="New House Number"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -251,16 +261,16 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="listInput" value={val[`House Number`]} readOnly></input>
-                      <button className="Edit" onClick={ () => {this.editInput("house",val.id)}}>Edit</button>
-                      <button className="Delete" onClick={() => {this.deleteList("house",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" value={val[`House Number`]} readOnly></input>
+                      <button className="list__edit" onClick={ () => {this.editInput("house",val.id)}}>Edit</button>
+                      <button className="list__delete" onClick={() => {this.deleteList("house",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
                 ))}
               </tbody>
             </table>
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>Descriptions</th>
@@ -271,7 +281,7 @@ class Lists extends Component{
                   <td>
                     <form id="addDescription" onSubmit={this.addSubmit}>
                       <input type="text" name="desc" placeholder="New Description"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -279,16 +289,16 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="listInput" value={val[`Description`]} readOnly></input>
-                      <button className="Edit" onClick={ () => {this.editInput("desc",val.id)}}>Edit</button>
-                      <button className="Delete" onClick={() => {this.deleteList("desc",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" value={val[`Description`]} readOnly></input>
+                      <button className="list__edit" onClick={ () => {this.editInput("desc",val.id)}}>Edit</button>
+                      <button className="list__delete" onClick={() => {this.deleteList("desc",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
                 ))}
               </tbody>
             </table>
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>Types</th>
@@ -299,7 +309,7 @@ class Lists extends Component{
                   <td>
                     <form id="addType" onSubmit={this.addSubmit}>
                       <input type="text" name="type" placeholder="New Type"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -307,16 +317,16 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="listInput" value={val[`Type`]} readOnly></input>
-                      <button className="Edit" onClick={ () => {this.editInput("type",val.id)}}>Edit</button>
-                      <button className="Delete" onClick={() => {this.deleteList("type",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" value={val[`Type`]} readOnly></input>
+                      <button className="list__edit" onClick={ () => {this.editInput("type",val.id)}}>Edit</button>
+                      <button className="list__delete" onClick={() => {this.deleteList("type",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
                 ))}
               </tbody>
             </table>
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>Titles</th>
@@ -327,7 +337,7 @@ class Lists extends Component{
                   <td>
                     <form id="addTitle" onSubmit={this.addSubmit}>
                       <input type="text" name="title" placeholder="New Title"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -335,16 +345,16 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="listInput" value={val[`Title`]} readOnly></input>
-                      <button className="Edit" onClick={ () => {this.editInput("title",val.id)}}>Edit</button>
-                      <button className="Delete" onClick={() => {this.deleteList("title",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" value={val[`Title`]} readOnly></input>
+                      <button className="list__edit" onClick={ () => {this.editInput("title",val.id)}}>Edit</button>
+                      <button className="list__delete" onClick={() => {this.deleteList("title",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
                 ))}
               </tbody>
             </table>
-            <table className="Lists-table">
+            <table className="list__table">
               <thead>
                 <tr>
                   <th>Payment Methods</th>
@@ -355,7 +365,7 @@ class Lists extends Component{
                   <td>
                     <form id="addPayment" onSubmit={this.addSubmit}>
                       <input type="text" name="payment" placeholder="New Payment"></input>
-                      <button className="Add">Add</button>
+                      <button className="list__add">Add</button>
                     </form>
                   </td>
                 </tr>
@@ -363,9 +373,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="listInput" value={val[`Payment Method`]} readOnly></input>
-                      <button className="Edit" onClick={ () => {this.editInput("payment",val.id)}}>Edit</button>
-                      <button className="Delete" onClick={() => {this.deleteList("payment",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" value={val[`Payment Method`]} readOnly></input>
+                      <button className="list__edit" onClick={ () => {this.editInput("payment",val.id)}}>Edit</button>
+                      <button className="list__delete" onClick={() => {this.deleteList("payment",val.id)}}>Delete</button>
                     </td>
                   </tr>
     

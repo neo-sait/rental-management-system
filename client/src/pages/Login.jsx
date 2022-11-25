@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import styles from "./Login.module.css"
+import "./style.css"
 
 const Login = () => {
 
@@ -53,18 +53,18 @@ const Login = () => {
     */
 
     return (
-        <div className={styles.App}>
+        <div className="login__App">
             
-            <div className={styles.box}>
-                <h1>Login</h1>
-                <div className={styles.inputGroup}> 
-                    <input type="email" placeholder="Email" onChange={e=>{ setEmail(e.target.value) }}></input>
+            <div className="login__box">
+                <h1 className="login__h1">Login</h1>
+                <div className="login__inputGroup"> 
+                    <input className="login__input" type="email" placeholder="Email" onChange={e=>{ setEmail(e.target.value) }}></input>
                 </div>
-                <div className={styles.inputGroup}> 
-                    <input type="password" placeholder="Password" onChange={e=>{ setPassword(e.target.value) }}></input>
-                    <div className={styles.error}>{error}</div>
+                <div className="login__inputGroup"> 
+                    <input className="login__input" type="password" placeholder="Password" onChange={e=>{ setPassword(e.target.value) }}></input>
+                    <div className="login__error">{error}</div>
                 </div>
-                <button className={styles.formButton} type="submit" onClick={ ()=> {login()}}>Login</button>
+                <button className="login__formButton" type="submit" onClick={ ()=> {login()}}>Login</button>
             </div>
         </div>
     )
