@@ -112,6 +112,7 @@ function Table({ columns, data }) {
             </ul>
         </div >
     )
+    
 }
 
 function PaginationTableComponent() {
