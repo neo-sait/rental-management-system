@@ -137,6 +137,23 @@ class Lists extends Component{
     }
 
     componentDidMount(){
+      let auth = localStorage.getItem("auth");
+
+      axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+          if (authed.data == false){
+            navigate("/login");
+          }
+        })
+
+      window.addEventListener('storage', ()=>{
+        
+        axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+          if (authed.data == false){
+            navigate("/login");
+          }
+        })
+      }) 
+
         axios.get('http://localhost:5000/api/getList').then( (res) =>{
             const arr = res.data;
 

@@ -39,6 +39,7 @@ async function get(collection, doc){
 // param String Document Name
 // param Object Document Data
 async function add(col,json){
+    console.log("adding new doc")
     const res = firestore.collection(col).add(json);
     return [(await res).id, json];
 }
@@ -60,5 +61,12 @@ async function set(collection,doc,json){
 async function remove(col,doc){
     firestore.collection(col).doc(doc).delete();
 }
+async function incrementDoc(col,doc,newVal){
+    
+    //const incr = firestore.FieldValue.increment(1);
+    firestore.collection(col).doc(doc).update( {
+        counter: newVal,
+    });
+}
 
-module.exports = {getAll,get,add,set,remove};
+module.exports = {getAll,get,add,set,remove,incrementDoc};

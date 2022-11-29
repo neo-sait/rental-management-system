@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import { Sidebar } from '../components';
 import axios from 'axios'
 import papa from 'papaparse';
@@ -52,6 +52,26 @@ const importCSV = () => {
     window.alert("No CSV file selected");
   }
 };
+
+let auth = localStorage.getItem("auth");
+        
+    axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+      if (authed.data == false){
+        navigate("/login");
+      }
+    })
+
+useEffect(()=>{
+  window.addEventListener('storage', ()=>{
+    let auth = localStorage.getItem("auth");
+        
+    axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+      if (authed.data == false){
+        navigate("/login");
+      }
+    })
+  }) 
+})
 
 
 const Import = () => {

@@ -41,17 +41,6 @@ const Login = () => {
         
     }
 
-    /*
-                   <div className={classes.inputGroup}>
-                    <input type="email" placeholder="Email" id="email" required></input>
-                </div>
-                <div className={classes.inputGroup}>
-                    <input type="password" placeholder="Password" id="password"></input>
-                    <div className={classes.error}>{error}</div>
-                </div>
-                <button className={classes.formButton} type="submit">Login</button>
-    */
-
     return (
         <div className="login__App">
             

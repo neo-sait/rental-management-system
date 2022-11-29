@@ -5,7 +5,11 @@ const bcrypt = require("bcrypt");
 const app = express();
 
 app.use(express.json({ limit: 1000000}));
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET","POST","DELETE"]
+}));
+
 
 app.post('/login',(req,res) => {
     const email = req.body.email;
@@ -148,5 +152,23 @@ app.post('/api/editFromLists',(req,res)=>{
     res.send(true);
 })
 
+app.get('/api/getTransactionCounter',(req,res)=>{
+    firestore.get("Transaction","--Counter--").then((result)=>{
+       // firestore.incrementDoc("Transaction","--Counter--");
+        res.send(result);
+
+    })
+})
+
+app.post('/api/newTransaction',(req,res)=>{
+
+        const input = req.body;
+        console.log(input);
+        firestore.add("Transaction",input);
+        firestore.incrementDoc("Transaction","--Counter--", input.Number);
+        
+
+        res.send(true);
+})
 
 app.listen(5000, () => console.log('Server on port 5000'));

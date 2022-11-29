@@ -20,10 +20,12 @@ export const links = [
         name: 'Tenants',
         icon: <FiUsers />,
       },
+      
       {
         name: 'Transactions',
         icon: <MdHistory />,
       },
+      
       {
         name: 'Lists',
         icon: <MdHistory />,
@@ -54,7 +56,6 @@ export const links = [
         name: 'Profile',
         icon: <RiProfileFill />,
       }
-
     ],
   },
   {
