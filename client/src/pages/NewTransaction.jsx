@@ -1,9 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import { Sidebar } from '../components';
+import { useNavigate } from 'react-router-dom';
+import LoginCheck from '../modules/LoginCheck';
 import axios from 'axios'
 import "./style.css"
 
 const NewTransaction = () => {
+  const navigate = useNavigate();
   var addysArr = [];
   var housenumArr = [];
   var pNameArr = [];
@@ -48,25 +51,8 @@ const NewTransaction = () => {
     
   }
 
-  let auth = localStorage.getItem("auth");
-      
-  axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
-    if (authed.data == false){
-      navigate("/login");
-    }
-  })
-
   useEffect(() => {
-    window.addEventListener('storage', ()=>{
-      let auth = localStorage.getItem("auth");
-      
-      axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
-        if (authed.data == false){
-          navigate("/login");
-        }
-      })
-    }) 
-
+    LoginCheck(navigate);
     if(localStorage.getItem("newTransactionsLoaded") !== "deleteToLoadDropdowns"){
       console.log('lists pulled');
       localStorage.setItem("newTransactionsLoaded","deleteToLoadDropdowns");

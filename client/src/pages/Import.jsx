@@ -1,5 +1,7 @@
 import React, { CSSProperties, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../components';
+import LoginCheck from '../modules/LoginCheck';
 import axios from 'axios'
 import papa from 'papaparse';
 import "./style.css"
@@ -16,7 +18,6 @@ const handleChange = ({ target: { files } }) => {
 };
 
 const importCSV = () => {
-
   if (file != null){
     let display = document.getElementById("display");
     console.log(file, "file");
@@ -53,31 +54,15 @@ const importCSV = () => {
   }
 };
 
-let auth = localStorage.getItem("auth");
-        
-    axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
-      if (authed.data == false){
-        navigate("/login");
-      }
-    })
-
-useEffect(()=>{
-  window.addEventListener('storage', ()=>{
-    let auth = localStorage.getItem("auth");
-        
-    axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
-      if (authed.data == false){
-        navigate("/login");
-      }
-    })
-  }) 
-})
-
-
 const Import = () => {
+  const navigate = useNavigate();
 
+  useEffect(async () => {
+    LoginCheck(navigate);
+  })
+
+  
   return (
-
     <div className="App flex">
 
       <div className="w-72 sidebar

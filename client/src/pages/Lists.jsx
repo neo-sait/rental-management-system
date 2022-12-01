@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {AiOutlineReload} from 'react-icons/ai'
+import { Navigate, useNavigate } from "react-router-dom";
+import LoginCheck from '../modules/LoginCheck';
 import axios from 'axios';
+  
 import { Sidebar } from '../components';
 import "./style.css"
 import { throws } from 'assert';
@@ -22,6 +25,8 @@ class Lists extends Component{
             titleArr: [],
             paymentArr: [],
         }
+
+        console.log(props);
         
         this.appendToList = (type,json) => this.setState(state=>{
           let list;
@@ -137,22 +142,7 @@ class Lists extends Component{
     }
 
     componentDidMount(){
-      let auth = localStorage.getItem("auth");
-
-      axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
-          if (authed.data == false){
-            navigate("/login");
-          }
-        })
-
-      window.addEventListener('storage', ()=>{
-        
-        axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
-          if (authed.data == false){
-            navigate("/login");
-          }
-        })
-      }) 
+      LoginCheck(this.props.navigate);
 
         axios.get('http://localhost:5000/api/getList').then( (res) =>{
             const arr = res.data;
@@ -408,4 +398,6 @@ class Lists extends Component{
     }
 }
 
-export default Lists
+export default function Root(){
+  return <Lists navigate={useNavigate()}/>
+}
