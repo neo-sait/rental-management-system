@@ -1,40 +1,35 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Sidebar } from '../components';
+import { Sidebar, EditTenant } from '../components';
 import ReactDOM from 'react-dom'
 import { AiOutlineReload } from 'react-icons/ai'
+import LoginCheck from '../modules/LoginCheck';
+import {MdMode} from 'react-icons/md';
 import './style.css'
 
 let dataArrInit = []
 
 const Tenants = () => {
+  const [popUp, setPopUp] = useState(false);
+  const [dataArr, setDataArr] = useState(dataArrInit);
+  const [tenantInfo, setTenantInfo] = useState([]);
   const navigate = useNavigate();
-  const count = "tenantCount";
+  const count = "tenantCount"
 
-  let auth = localStorage.getItem("auth");
-
-  // temporary, soon add hash verification
-  axios.post('http://localhost:5000/api/authenticate', { id: auth }).then((authed) => {
-    if (authed.data == false) {
-      navigate("/login");
+  // regex pattern to convert 10 digit number as
+  // (123) 456-7890
+  const formatPhoneNumber = (input) =>{
+    var cleaned = ('' + input).replace(/\D/g, '');
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
     }
-  })
-  const [dataArr, setDataArr] = useState(dataArrInit)
-
+    return null;
+  }
 
   useEffect(async () => {
-
-    window.addEventListener('storage', () => {
-      let auth = localStorage.getItem("auth");
-
-      axios.post('http://localhost:5000/api/authenticate', { id: auth }).then((authed) => {
-        console.log("responsed")
-        if (authed.data == false) {
-          navigate("/login");
-        }
-      })
-    })
+    LoginCheck(navigate);
 
     if (dataArrInit.length != parseInt(localStorage.getItem(count))) {
       dataArrInit = []
@@ -57,6 +52,11 @@ const Tenants = () => {
     }
   })
 
+  const editTenant = (data) =>{
+    setPopUp(true);
+    setTenantInfo(data); 
+  }
+
   return (
 
     <div className="App flex">
@@ -67,11 +67,13 @@ const Tenants = () => {
         <Sidebar />
       </div>
 
+      <EditTenant trigger={popUp} setTrigger={setPopUp} data={tenantInfo} />
+
       <div className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
         <div >
           <h2 className="ten__h2">Tenants</h2>
-          <div class="container">
-            <table class="ten__table">
+          <div className="container">
+            <table className="ten__table">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -79,6 +81,7 @@ const Tenants = () => {
                   <th>House Number</th>
                   <th>Email Address</th>
                   <th>Phone Number</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -89,9 +92,10 @@ const Tenants = () => {
                     <td>{val[0][`Current Tenant`]}</td>
                     <td>{val[0][`House Number`]}</td>
                     <td>{val[0][`Email Address`]}</td>
-                    <td>{val[0][`Phone Number`]}</td>
+                    <td>{formatPhoneNumber(val[0][`Phone Number`])}</td>
+                    <td className="ten__edit"><button onClick={()=>{editTenant(val)}}><MdMode /></button></td>
                   </tr>
-
+                  
                 ))}
               </tbody>
             </table>

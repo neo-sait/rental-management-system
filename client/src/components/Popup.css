@@ -1,0 +1,53 @@
+.popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-inner{
+    position: relative;
+    padding: 32px;
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+}
+
+.popup-h1{
+    text-align: center;
+    font-size: 24px;
+    padding-bottom: 20px;
+}
+
+.popup-table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.popup-table tr{
+    width: 50%;
+}
+
+.popup-table input, select{
+    background-color: rgb(245,245,245);
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.popup-inner .close-btn{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.close-btn{
+    color: white;
+    background-color: #324960;
+    width: 50px;
+}

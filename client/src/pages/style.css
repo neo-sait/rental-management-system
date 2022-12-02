@@ -378,6 +378,10 @@
     background-color:rgba(169, 169, 169, 0.603);
 }
 
+.ten__table .ten__edit td{
+    background-color: red;
+}
+
 .ten__table td,
 .ten__table th{
     text-align: center;

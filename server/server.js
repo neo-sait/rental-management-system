@@ -61,8 +61,37 @@ app.post('/api/authenticate',(req,res)=>{
 })
 
 app.get('/api/loadTenants',(req,res) =>{
+    let payersFromList=[];
+    let payersFromTenants=[];
+
+    let finalResult;
+
     firestore.getAll("Tenants","Name").then((result)=>{
-        res.send(result);
+        result.forEach(obj=>{
+            payersFromTenants.push(obj[1]);
+        })
+
+        firestore.getAll("Lists").then((arr)=>{
+            arr.forEach(obj=>{
+                if ("Payer Name" in obj[0]){
+                    payersFromList.push(obj[0]["Payer Name"]);
+                }
+            })
+
+            let final = payersFromTenants.filter(tenant => payersFromList.indexOf(tenant) == -1)
+            
+            if (final.length > 0){
+                final.forEach(tenant =>{
+                
+                    finalResult = result.filter(arr => arr[1] != tenant);
+                    res.send(finalResult);
+                    firestore.remove("Tenants",tenant);
+                })
+            }else{
+                res.send(result);
+            }
+            
+        })
     })
 })
 
@@ -101,6 +130,15 @@ app.post('/api/addToLists',(req,res)=>{
         fb = firestore.add("Lists",{Address: input});
     }else if (listType == "payer"){
         fb = firestore.add("Lists",{"Payer Name": input});
+
+        firestore.set("Tenants",input,{
+            "Current Tenant": "No",
+            "Email Address": "Placeholder",
+            "House Number": "Placeholder",
+            "Name": input,
+            "Phone Number": "1234567890",
+            "Title": "Tenant"
+        })
     }else if (listType == "house"){
         fb = firestore.add("Lists",{"House Number": input});
     }else if (listType == "desc"){
@@ -122,9 +160,7 @@ app.post('/api/addToLists',(req,res)=>{
 
 app.post('/api/removeFromLists',(req,res)=>{
     const id = req.body.target;
-
     firestore.remove("Lists",id);
-    
     res.send(true);
 })
 
@@ -169,6 +205,25 @@ app.post('/api/newTransaction',(req,res)=>{
         
 
         res.send(true);
+})
+
+app.post('/api/saveTenantInformation',(req,res)=>{
+
+    const tenant = req.body.tenant;
+    const current = req.body.current;
+    const house = req.body.house;
+    const email = req.body.email;
+    const phone = req.body.phone;
+
+    firestore.get("Tenants",tenant).then(data=>{
+        data[0]["Current Tenant"] = current;
+        data[0]["House Number"] = house;
+        data[0]["Email Address"] = email;
+        data[0]["Phone Number"] = phone;
+        firestore.set("Tenants",tenant,data[0]);
+    })
+
+    res.send(true);
 })
 
 app.listen(5000, () => console.log('Server on port 5000'));

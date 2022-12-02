@@ -30,7 +30,7 @@ async function get(collection, doc){
     if (!document.exists){
         console.log("Document does not exist in the " + collection + " collection.");
     }else{
-        return document.data();
+        return [document.data(),document.id];
     }
 }
 
@@ -39,7 +39,6 @@ async function get(collection, doc){
 // param String Document Name
 // param Object Document Data
 async function add(col,json){
-    console.log("adding new doc")
     const res = firestore.collection(col).add(json);
     return [(await res).id, json];
 }
@@ -48,11 +47,7 @@ async function add(col,json){
 async function set(collection,doc,json){
     let list = firestore.collection(collection).doc(doc);
     let document = await list.get();
-    if (!document.exists){
-        console.log("Document does not exist in the " + collection + " collection.");
-    }else{
-        list.set(json);
-    }
+    list.set(json);
 }
 
 // Deletes document from database
