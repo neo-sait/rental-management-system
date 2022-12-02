@@ -217,7 +217,7 @@ class Lists extends Component{
         <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
     
         <div>
-          <h2 className="list__h2">Lists</h2>
+          <h1 className="list__h1">Lists</h1>
     
           <div className="list__container">
     

@@ -116,14 +116,6 @@ const NewTransaction = () => {
 
       <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
       <div className="newtrans__container">
-        <div className='newtrans__rect'>
-        <ul>
-            <li><button>+</button></li>
-            <li><button>+</button></li>
-            <li><button>+</button></li>
-            <li><button>+</button></li>
-        </ul>
-        </div>
         <form onSubmit={addTransaction} id='Payment_form' className="newtrans__paymentform">
           <h1 className="newtrans__h1">New Transaction</h1>
 
@@ -180,17 +172,23 @@ const NewTransaction = () => {
 
           
           <input type="number" name='tPay' id='tPay' step="0.01" placeholder='$0.00' className="newtrans__select"/>
-          <br />
-          <label for="tDateCharged">Date Charged</label>
-          <label for="tDatePaid">Date Paid</label>
-          <br />
-          <input type="date" id='tDateCharged' name='tDateCharged' className="newtrans__select">
-          
-          </input>
-          
-          <input type="date" id='tDatePaid' name='tDatePaid' className="newtrans__select">
+
+          <table className="newtrans__table">
+            <tbody>
+              <tr>
+              <td><label for="tDateCharged" className="newtrans__datecharge">Date Charged</label></td>
+              <td className="newtrans__faketd"></td>
+              <td><label for="tDatePaid" className="newtrans__datepaid">Date Paid</label></td>
+              </tr>
+
+               <tr>
+              <td><input type="date" id='tDatePaid' name='tDatePaid'></input></td>
+              <td className="newtrans__faketd"></td>
+              <td><input type="date" id='tDateCharged' name='tDateCharged'></input></td>
+              </tr>  
+            </tbody>
+          </table>
          
-          </input>
           <input type="text" name='tNote' id='tNote' placeholder='Note' className="newtrans__select"/>
     
             

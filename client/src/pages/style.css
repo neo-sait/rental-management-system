@@ -79,12 +79,11 @@
 
 /* Lists Page */
 
-.list__h2{
+.list__h1{
     font-size: 31px;
 	margin: 1em;
 	text-align: center;
-	font-weight: 400;
-	font-style: normal;
+	font-weight: bold;
 }
 
 .list__container{
@@ -248,7 +247,11 @@
 }
 
 .newtrans__h1{
-    margin: 20px;
+    position: relative;
+    font-size: 31px;
+    font-weight: bold;
+    margin-left: 33%;
+    padding-bottom: 50px;
 }
 
 .newtrans__select{
@@ -257,26 +260,35 @@
     margin-left: 8%;
     width: 500px;
     height: 40px;
-    border-radius: 10px;
-    background-color: #5555;
-    border: thin solid black;
+    background-color: #ececec;
 }
-
 
 .newtrans__formButton > ul > li{
     float: left;
     width: 300px;
-    margin-left:  15%;
+    margin-left:  12%;
     margin-right: 10%;
 }
 
 .newtrans__formButton > ul > li > button{
     width: 100%;
-    background-color: #333333;
+    background-color: #324960;
     color: #E6E6E6;
-    border-radius: 10px;
 }
 
+.newtrans__table{
+    margin-left: 8%;
+}
+
+.newtrans__table input{
+    width: 500px;
+    height: 40px;
+    background-color: #ececec;
+}
+
+.newtrans__faketd{
+    width: 145px;
+}
 /* Transactions Page */
 
 .trans__h2{
