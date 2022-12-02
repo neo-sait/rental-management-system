@@ -49,6 +49,31 @@ class Lists extends Component{
 
           return {list};
         })
+
+        this.valueIsUnique = (source,value) =>{
+          let duplicates;
+          if (source == "address"){
+            duplicates = this.state.addressArr.filter(obj => obj.Address == value);
+          }else if (source == "payer"){
+            duplicates = this.state.payerArr.filter(obj => obj["Payer Name"] == value);
+          }else if (source == "house"){
+            duplicates = this.state.houseArr.filter(obj => obj["House Number"] == value);
+          }else if (source == "desc"){
+            duplicates = this.state.descArr.filter(obj => obj["Description"] == value);
+          }else if (source == "type") {
+            duplicates = this.state.typeArr.filter(obj => obj.Type == value);
+          }else if (source == "title") {
+            duplicates = this.state.titleArr.filter(obj => obj.Title == value);
+          }else if (source == "payment"){
+            duplicates = this.state.paymentArr.filter(obj => obj["Payment Method"] == value);
+          }
+
+          if (duplicates.length > 0){
+            return false;
+          }else{
+            return true;
+          }
+        }
         
         // thankfully js provides ways to universally grab the input value and the id it came with
         // we can use the information to determine which submit it came from and act upon that :D
@@ -58,7 +83,9 @@ class Lists extends Component{
           const entry = event.target[0];
           const source = event.target[0].name;
 
-          if (entry.value.length > 0){
+          if (this.valueIsUnique(source,entry.value) == false) {
+            window.alert("Input already exists in list.");
+          }else if (entry.value.length > 0){
             axios.post('http://localhost:5000/api/addToLists',{listType: source, input: entry.value}).then( res =>{
               const data = res.data;
               let json;
@@ -93,6 +120,7 @@ class Lists extends Component{
           }else{
             window.alert("Input needs a value before adding.");
           }
+          
         }
 
         this.deleteList = (type,id) => {
