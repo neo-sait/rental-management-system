@@ -94,6 +94,7 @@ class Lists extends Component{
                 json = {Address: entry.value, id: data[0]};
                 window.alert("Address data successfully added");
               }else if (source == "payer"){
+                localStorage.setItem("tenantCount",parseInt(localStorage.getItem("tenantCount"))+1);
                 json = {"Payer Name": entry.value, id: data[0]};
                 window.alert("Payer data successfully added");
               }else if (source == "house"){
@@ -133,6 +134,7 @@ class Lists extends Component{
           if (type == "address"){
             this.setState({addressArr: filter});
           }else if (type == "payer"){
+            localStorage.setItem("tenantCount",parseInt(localStorage.getItem("tenantCount"))-1);
             this.setState({payerArr: filter});
           }else if (type == "house"){
             this.setState({houseArr: filter});

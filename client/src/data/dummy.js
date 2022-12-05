@@ -3,7 +3,7 @@ import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutline
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart, FiUsers } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsHouseFill } from 'react-icons/bs';
 import { RiContactsLine, RiStockLine, RiProfileFill } from 'react-icons/ri';
-import { MdHistory, MdOutlineSupervisorAccount } from 'react-icons/md';
+import { MdHistory, MdOutlineSupervisorAccount, MdCalculate, MdViewList } from 'react-icons/md';
 
 
 
@@ -28,7 +28,12 @@ export const links = [
       
       {
         name: 'Lists',
-        icon: <MdHistory />,
+        icon: <MdViewList />,
+      },
+
+      {
+        name: 'Calculate',
+        icon: <MdCalculate />,
       },
 
     ],

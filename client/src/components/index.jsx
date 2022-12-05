@@ -1,2 +1,4 @@
 export { default as Sidebar } from './Sidebar';
 export {default as EditTenant} from './EditTenant';
+export {default as CalcEdit} from './CalcEdit';
+export {default as CalcRead} from './CalcRead';

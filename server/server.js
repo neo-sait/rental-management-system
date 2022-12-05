@@ -226,4 +226,37 @@ app.post('/api/saveTenantInformation',(req,res)=>{
     res.send(true);
 })
 
+app.get('/api/getAddresses',(req,res)=>{
+    let addresses = [];
+    firestore.getAll("Lists").then(result=>{
+        result.forEach(obj=>{
+            if ("Address" in obj[0]){
+                addresses.push(obj[0].Address);
+            }
+        })
+        res.send(addresses);
+    })
+})
+
+app.post('/api/addCalcData',(req,res)=>{
+    let json = req.body.data;
+    let id = json.id.toString();
+    console.log(json);
+
+    firestore.set("CalculationData",id,json);
+    res.send(true);
+})
+
+app.get('/api/getCalcData',(req,res)=>{
+    firestore.getAll("CalculationData").then(response=>{
+        res.send(response);
+    })
+})
+
+app.post('/api/deleteCalcData',(req,res)=>{
+    let id = req.body.id.toString();
+
+    firestore.remove("CalculationData",id);
+})
+
 app.listen(5000, () => console.log('Server on port 5000'));

@@ -43,7 +43,7 @@ async function add(col,json){
     return [(await res).id, json];
 }
 
-// virtually the same as the add method, however checks if data exists in the first place
+// virtually the same as the add method
 async function set(collection,doc,json){
     let list = firestore.collection(collection).doc(doc);
     let document = await list.get();

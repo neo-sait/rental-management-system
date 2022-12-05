@@ -6,3 +6,4 @@ export {default as Error} from './Error';
 export {default as NewTransaction} from './NewTransaction';
 export {default as Overview} from './Overview';
 export {default as Lists} from './Lists';
+export {default as Calculate} from './Calculate';
