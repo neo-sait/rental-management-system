@@ -42,19 +42,38 @@ const Login = () => {
     }
 
     return (
-        <div className="login__App">
-            
-            <div className="login__box">
-                <h1 className="login__h1">Login</h1>
-                <div className="login__inputGroup"> 
-                    <input className="login__input" type="email" placeholder="Email" onChange={e=>{ setEmail(e.target.value) }}></input>
+        <div className="login__LoginInfo">
+            <div className="login__loginContainer">
+                <div className="login__leftBox">
+                    <div className="login__LoginInfo">
+                        <h1 className="login__leftHeading">Welcome to 4Rent</h1><br/>
+                        <p>A customizable book keeping web application for property owners.</p><br/>
+                        <ul>
+                            <li>Store and view property data.</li>
+                            <li>Generate charts from financial data.</li>
+                            <li>Upload large data sets using excel files</li>
+                            <li>Customize your data entry.</li>
+                        </ul>
+                    </div>
                 </div>
-                <div className="login__inputGroup"> 
-                    <input className="login__input" type="password" placeholder="Password" onChange={e=>{ setPassword(e.target.value) }}></input>
-                    <div className="login__error">{error}</div>
+                <div className="login__rightBox">
+                    <h1 className="login__rightHeading">Login</h1>
+                    <div className="login__loginForm">
+                        <div className="login__inputEmail">
+                            <input type="email" placeholder="Email" onChange={e => {setEmail(e.target.value)}}></input>
+                        </div>
+                        <div className="login__inputPass">
+                            <input type="password" placeholder="Password" onChange={e => {setPassword(e.target.value)}}></input>
+                        </div>
+                        <div className="login__submitInput">
+                            <button className="formButton" type="submit" onClick={() => {login()}}>Login</button>
+                        </div>
+                        <div className="login__error">
+                            {error}
+                        </div>
+                    </div>
                 </div>
-                <button className="login__formButton" type="submit" onClick={ ()=> {login()}}>Login</button>
-            </div>
+            </div >
         </div>
     )
 }

@@ -17,64 +17,161 @@
 
 /* Login Page */
 
-.login__App{
-    display: flex;
-	justify-content: center;
-	align-items: center;  
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	overflow: auto;  
-	background-color: rgb(250, 250, 250);
+.login__LoginInfo p {
+	margin: auto auto;
+	font-size: 24px;
+	padding-left: 4%;
 }
 
-.login__box{
-    width: 416px;
-	height: 320px;
-	background-color: white;
-	box-shadow: 1px 1px 3px  0.14px rgba(0,0,0,0.2) ;
+.login__LoginInfo li {
+	font-size: 18px;
+	margin: auto auto;
 }
 
-.login__h1{
-    text-align: center;
-	font-size: 32px;
-    padding-bottom: 50px;
+.login__LoginInfo ul {
+	list-style: circle;
 }
 
-.login__inputGroup{
-	margin-bottom: 1rem;
+.login__LoginInfo {
+	width: 100%;
+	height: 100vh;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
 }
 
-.login__input{
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-    width: 90%;
-    padding: 0.5rem;
-	margin-bottom: 1rem;
-    box-sizing: border-box;
-	background-color: rgb(245,245,245);
-	box-shadow: 1px 1px 3px  0.14px rgba(0,0,0,0.2);
-}
-
-.login__formButton{
+.login__loginContainer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 70%;
+	height: 70%;
+	min-width: 494px;
+	transform: translate(-50%, -50%);
+	background-color: aqua;
 	display: flex;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 15px;
-    background-color: #324960;
-	color: white;
-	padding: 10px 10px;
-	box-shadow: 1px 1px 3px  0.14px rgba(0,0,0,0.2) ;
+	flex-direction: row;
+	flex-wrap: wrap;
+	box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
-.login__error{
+.login__leftBox {
+	width: 50%;
+	height: 100%;
+	min-width: 494px;
+	background-color: #324960;
+	margin: auto auto;
+	color: white;
+	flex: 50%;
+}
+
+.login__rightBox {
+	width: 50%;
+	height: 100%;
+	min-width: 494px;
+	background-color: white;
+	padding-top: 5%;
+	flex: 50%;
+}
+
+.login__loginForm {
+	width: 40%;
+	height: 60%;
+	padding-top: 10%;
+	margin: auto auto;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+
+.login__rightHeading {
+	margin: auto auto;
+}
+
+.login__leftHeading {
+	text-align: left;
+	font-size: 44px;
+	margin: auto auto;
+}
+
+.login__rightHeading {
+	text-align: center;
+	font-size: 44px;
+	color: #324960;
+	margin: auto auto;
+}
+
+.login__LoginInfo {
+	width: 100%;
+	height: 70%;
+	padding-left: 10%;
+	padding-right: 10%;
+	padding-top: 10%;
+
+}
+
+.login__inputEmail {
+	width: 100%;
+	height: 15%;
+	margin-bottom: 5%;
+}
+
+.login__inputPass {
+	width: 100%;
+	height: 15%;
+}
+
+.login__inputEmail input {
+	width: 100%;
+	height: 100%;
+	align-self: center;
+	text-align: left;
+	padding: 2%;
+	margin: auto auto;
+	text-align: left;
+	box-shadow: 3px 3px 3px 0.14px rgba(0, 0, 0, 0.2);
+}
+
+.login__inputPass input {
+	width: 100%;
+	height: 100%;
+	align-self: center;
+	text-align: left;
+	padding: 2%;
+	margin: auto auto;
+	text-align: left;
+	box-shadow: 3px 3px 3px 0.14px rgba(0, 0, 0, 0.2);
+}
+
+.login__submitInput {
+	width: 100%;
+	height: 15%;
+	align-self: center;
+	text-align: left;
+	margin: auto auto;
+}
+
+.login__loginForm button {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background-color: #324960;
+	color: white;
+	box-shadow: 1px 1px 3px 0.14px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+}
+
+.login__error {
+	margin: auto auto;
 	color: red;
-	margin-left: 1.2rem;
-	margin-top: 0.5rem;
-    font-size: 0.85rem;
+	font-size: 0.85rem;
+}
+
+.login__rentLogo {
+	width: 100px;
+	height: 50px;
+	object-fit: contain;
 }
 
 /* Lists Page */

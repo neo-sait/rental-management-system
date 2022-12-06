@@ -262,11 +262,6 @@ app.post('/api/deleteCalcData',(req,res)=>{
 app.post('/api/calculateData',(req,res)=>{
     const properties = req.body.properties;
     let propertyData = {};
-    let calculationData = {
-        Cashflow: 0,
-        Equity: 0,
-        Net: 0
-    };
 
     properties.forEach(obj=>{
         propertyData[obj] = {Revenue: 0, Expense: 0, Principle: 0};
@@ -289,7 +284,7 @@ app.post('/api/calculateData',(req,res)=>{
                 }
             }
         })
-
+        
         res.send(propertyData);
     })
 
