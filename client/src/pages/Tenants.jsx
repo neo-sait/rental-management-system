@@ -5,7 +5,7 @@ import { Sidebar, EditTenant } from '../components';
 import ReactDOM from 'react-dom'
 import { AiOutlineReload } from 'react-icons/ai'
 import LoginCheck from '../modules/LoginCheck';
-import {MdMode} from 'react-icons/md';
+import { MdMode } from 'react-icons/md';
 import './style.css'
 
 let dataArrInit = []
@@ -19,7 +19,7 @@ const Tenants = () => {
 
   // regex pattern to convert 10 digit number as
   // (123) 456-7890
-  const formatPhoneNumber = (input) =>{
+  const formatPhoneNumber = (input) => {
     var cleaned = ('' + input).replace(/\D/g, '');
     var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
@@ -52,9 +52,9 @@ const Tenants = () => {
     }
   })
 
-  const editTenant = (data) =>{
+  const editTenant = (data) => {
     setPopUp(true);
-    setTenantInfo(data); 
+    setTenantInfo(data);
   }
 
   return (
@@ -73,8 +73,30 @@ const Tenants = () => {
         <div >
           <h2 className="ten__h2">Tenants</h2>
           <div className="container">
+
             <table className="ten__table">
-              
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>House Number</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataArr.filter(arr => arr[0]["Title"] == "Owner").map((val) => (
+
+                    <tr key={val.Name}>
+                      <td>{val[0][`Name`]}</td>
+                      <td>{val[0][`House Number`]}</td>
+                      <td>{val[0][`Email Address`]}</td>
+                      <td>{formatPhoneNumber(val[0][`Phone Number`])}</td>
+                      <td className="ten__edit"><button onClick={() => { editTenant(val) }}><MdMode /></button></td>
+                    </tr>
+
+                  ))}
+                </tbody>
             </table>
             <table className="ten__table">
               <thead>
@@ -88,7 +110,7 @@ const Tenants = () => {
                 </tr>
               </thead>
               <tbody>
-                {dataArr.map((val) => (
+                {dataArr.filter(arr => arr[0]["Title"] != "Owner").map((val) => (
 
                   <tr key={val.Name}>
                     <td>{val[0][`Name`]}</td>
@@ -96,9 +118,9 @@ const Tenants = () => {
                     <td>{val[0][`House Number`]}</td>
                     <td>{val[0][`Email Address`]}</td>
                     <td>{formatPhoneNumber(val[0][`Phone Number`])}</td>
-                    <td className="ten__edit"><button onClick={()=>{editTenant(val)}}><MdMode /></button></td>
+                    <td className="ten__edit"><button onClick={() => { editTenant(val) }}><MdMode /></button></td>
                   </tr>
-                  
+
                 ))}
               </tbody>
             </table>

@@ -71,6 +71,8 @@ app.get('/api/loadTenants',(req,res) =>{
             payersFromTenants.push(obj[1]);
         })
 
+        // this checks if all tenants in the tenant page exists, if they dont they get
+        // removed from the list and then sent to the client
         firestore.getAll("Lists").then((arr)=>{
             arr.forEach(obj=>{
                 if ("Payer Name" in obj[0]){
@@ -210,18 +212,33 @@ app.post('/api/newTransaction',(req,res)=>{
 app.post('/api/saveTenantInformation',(req,res)=>{
 
     const tenant = req.body.tenant;
-    const current = req.body.current;
     const house = req.body.house;
     const email = req.body.email;
     const phone = req.body.phone;
-
-    firestore.get("Tenants",tenant).then(data=>{
-        data[0]["Current Tenant"] = current;
-        data[0]["House Number"] = house;
-        data[0]["Email Address"] = email;
-        data[0]["Phone Number"] = phone;
-        firestore.set("Tenants",tenant,data[0]);
-    })
+    let current = null;
+    let password = null;
+    if (req.body.current){
+        current = req.body.current;
+        firestore.get("Tenants",tenant).then(data=>{
+            data[0]["Current Tenant"] = current;
+            data[0]["House Number"] = house;
+            data[0]["Email Address"] = email;
+            data[0]["Phone Number"] = phone;
+            firestore.set("Tenants",tenant,data[0]);
+        })
+    }
+    if (req.body.password){
+        bcrypt.hash(req.body.password,10,(err,hash)=>{
+            password = hash;
+            firestore.get("Tenants",tenant).then(data=>{
+                data[0]["House Number"] = house;
+                data[0]["Email Address"] = email;
+                data[0]["Phone Number"] = phone;
+                data[0]["Password"] = password;
+                firestore.set("Tenants",tenant,data[0]);
+            })
+        })
+    }
 
     res.send(true);
 })

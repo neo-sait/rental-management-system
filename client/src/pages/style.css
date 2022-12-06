@@ -522,6 +522,7 @@
     max-width: 100%;
     white-space: nowrap;
     background-color:rgba(169, 169, 169, 0.603);
+    padding-bottom: 50px;
 }
 
 .ten__table .ten__edit td{
