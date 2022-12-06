@@ -15,7 +15,7 @@ const Login = () => {
       
     axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
       if (authed.data == true){
-        navigate("/tenants");
+        navigate("/profiles");
       }
     })
 
@@ -32,7 +32,7 @@ const Login = () => {
                 }else{
                     console.log("good")
                     localStorage.setItem("auth",response.data.id);
-                    navigate("/tenants");
+                    navigate("/profiles");
                 }
             }
         }).catch((err) =>{

@@ -1,4 +1,4 @@
-export { default as Tenants } from './Tenants';
+export { default as Profiles } from './Profiles';
 export { default as Transactions } from './Transactions';
 export { default as Import } from './Import';
 export {default as Login} from './Login';

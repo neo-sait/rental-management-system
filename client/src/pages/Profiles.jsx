@@ -10,7 +10,7 @@ import './style.css'
 
 let dataArrInit = []
 
-const Tenants = () => {
+const Profiles = () => {
   const [popUp, setPopUp] = useState(false);
   const [dataArr, setDataArr] = useState(dataArrInit);
   const [tenantInfo, setTenantInfo] = useState([]);
@@ -28,8 +28,8 @@ const Tenants = () => {
     return null;
   }
 
+  LoginCheck(navigate);
   useEffect(async () => {
-    LoginCheck(navigate);
 
     if (dataArrInit.length != parseInt(localStorage.getItem(count))) {
       dataArrInit = []
@@ -71,7 +71,7 @@ const Tenants = () => {
 
       <div className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
         <div >
-          <h2 className="ten__h2">Tenants</h2>
+          <h2 className="ten__h2">Profiles</h2>
           <div className="container">
 
             <table className="ten__table">
@@ -133,4 +133,4 @@ const Tenants = () => {
 
 }
 
-export default Tenants
+export default Profiles

@@ -17,7 +17,7 @@ export const links = [
         icon: <RiProfileFill />,
       },
       {
-        name: 'Tenants',
+        name: 'Profiles',
         icon: <FiUsers />,
       },
       

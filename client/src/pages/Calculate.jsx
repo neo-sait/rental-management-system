@@ -1,9 +1,12 @@
 import React, { useState, Fragment, useEffect } from "react";
 import './style.css';
 import axios from 'axios'
+import LoginCheck from '../modules/LoginCheck';
+import { useNavigate } from "react-router-dom";
 import { CalcEdit, CalcRead, Sidebar } from "../components";
 
 const Calculate = () => {
+  const navigate = useNavigate();
   let count = "calculateCount";
 
   const [cashflow, setCashflow] = useState(0);
@@ -190,6 +193,7 @@ const Calculate = () => {
     });
   }
 
+  LoginCheck(navigate);
   useEffect(() => {
 
     const load = async () => {

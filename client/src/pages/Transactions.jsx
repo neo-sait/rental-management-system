@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { Sidebar } from '../components';
+import LoginCheck from '../modules/LoginCheck';
 import { AiOutlineReload } from 'react-icons/ai';
 
 const Transactions = () => {
@@ -19,7 +20,7 @@ const Transactions = () => {
 
   let auth = localStorage.getItem("auth");
 
-  // add login check
+  LoginCheck(navigate);
   useEffect(async () => {
 
     const onLoad = async () => {

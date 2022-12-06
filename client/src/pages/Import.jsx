@@ -57,11 +57,10 @@ const importCSV = () => {
 const Import = () => {
   const navigate = useNavigate();
 
-  useEffect(async () => {
+  useEffect(async()=>{
     LoginCheck(navigate);
-  })
+  },[])
 
-  
   return (
     <div className="App flex">
 

@@ -341,34 +341,46 @@
     overflow: auto;
 }
 
+.newtrans__paymentform table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .newtrans__h1{
-    position: relative;
+    text-align: center;
     font-size: 31px;
     font-weight: bold;
-    margin-left: 33%;
     padding-bottom: 50px;
 }
 
 .newtrans__select{
     margin-bottom: 20px;
     margin-top: 20px;
-    margin-left: 8%;
     width: 500px;
     height: 40px;
     background-color: #ececec;
+    font-size: 18px;
 }
 
-.newtrans__formButton > ul > li{
-    float: left;
-    width: 300px;
-    margin-left:  12%;
-    margin-right: 10%;
+.newtrans__label{
+    font-size: 18px;
 }
 
-.newtrans__formButton > ul > li > button{
-    width: 100%;
+.newtrans__date{
+    width: 500px;
+    height: 40px;
+    font-size: 18px;
+    background-color: #ececec;
+}
+
+.newtrans__formButton{
+    position: relative;
+    margin-left: 25%;
+    height: 25px;
+    width: 50%;
     background-color: #324960;
     color: #E6E6E6;
+    font-size: 18px;
 }
 
 .newtrans__table{
