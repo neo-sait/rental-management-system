@@ -96,7 +96,7 @@ app.get('/api/loadTenants',(req,res) =>{
 })
 
 app.get('/api/loadTransactions',(req,res) =>{
-    firestore.getAll("TransactionTest","Number").then((result)=>{
+    firestore.getAll("Transactions","Number").then((result)=>{
         res.send(result);
     })
 })
@@ -237,6 +237,58 @@ app.get('/api/getAddresses',(req,res)=>{
         res.send(addresses);
     })
 })
+
+app.get('/api/getNames',(req,res)=>{
+    let names = [];
+    firestore.getAll("Lists").then(result=>{
+        result.forEach(obj=>{
+            if ("Payer Name" in obj[0]){
+                names.push(obj[0]["Payer Name"]);
+            }
+        })
+        res.send(names);
+    })
+})
+
+app.get('/api/getMethods',(req,res)=>{
+    let method = [];
+    firestore.getAll("Lists").then(result=>{
+        result.forEach(obj=>{
+            if ("Payment Method" in obj[0]){
+                method.push(obj[0]["Payment Method"]);
+            }
+        })
+        res.send(method);
+    })
+})
+
+app.get('/api/getDescriptions',(req,res)=>{
+    let descs = [];
+    firestore.getAll("Lists").then(result=>{
+        result.forEach(obj=>{
+            if ("Description" in obj[0]){
+                descs.push(obj[0]["Description"]);
+            }
+        })
+        res.send(descs);
+    })
+})
+
+app.get('/api/getTypes',(req,res)=>{
+    let types = [];
+    firestore.getAll("Lists").then(result=>{
+        result.forEach(obj=>{
+            if ("Type" in obj[0]){
+                types.push(obj[0].Type);
+            }
+        })
+        res.send(types);
+    })
+})
+
+
+
+
 
 app.post('/api/addCalcData',(req,res)=>{
     let json = req.body.data;

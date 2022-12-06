@@ -74,6 +74,9 @@ const Tenants = () => {
           <h2 className="ten__h2">Tenants</h2>
           <div className="container">
             <table className="ten__table">
+              
+            </table>
+            <table className="ten__table">
               <thead>
                 <tr>
                   <th>Name</th>
