@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
+import {AiFillSave, AiFillCloseCircle} from "react-icons/ai"
+import './calc.css';
 
-
-const CalcEdit = ({ editFormData, handleEditFormChange, handleCancelClick, propertyArray, currentProp }) => {
+const CalcEdit = ({ editFormData, handleEditFormChange, handleCancelClick, propertyArray, currentProp, handleEditFormSubmit }) => {
     console.log(currentProp);
   return (
     <tr>
@@ -42,8 +43,8 @@ const CalcEdit = ({ editFormData, handleEditFormChange, handleCancelClick, prope
             / > 
         </td>
         <td>
-            <button type="submit">Save</button>
-            <button type="button" onClick={handleCancelClick}>Cancel</button>
+            <button type="submit" className="calc-btn" onClick={handleEditFormSubmit}><AiFillSave/></button>
+            <button type="button" onClick={handleCancelClick}><AiFillCloseCircle/></button>
         </td>
     </tr>
   )

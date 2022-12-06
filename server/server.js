@@ -259,4 +259,40 @@ app.post('/api/deleteCalcData',(req,res)=>{
     firestore.remove("CalculationData",id);
 })
 
+app.post('/api/calculateData',(req,res)=>{
+    const properties = req.body.properties;
+    let propertyData = {};
+    let calculationData = {
+        Cashflow: 0,
+        Equity: 0,
+        Net: 0
+    };
+
+    properties.forEach(obj=>{
+        propertyData[obj] = {Revenue: 0, Expense: 0, Principle: 0};
+    })
+
+    firestore.getAll("Transactions").then(result=>{
+        
+        result.forEach(obj=>{
+            if (obj[0].Address in propertyData){
+                if(obj[0].Type == "Revenue"){
+                    propertyData[obj[0].Address].Revenue += obj[0].Payment;
+                }else if(obj[0].Type == "Expense"){
+                    propertyData[obj[0].Address].Expense += obj[0].Payment;
+                }
+
+                if (obj[0].Desc == "Mortgage"){
+                    propertyData[obj[0].Address].Principle += obj[0].Payment;
+                }else if (obj[0].Desc == "Interest"){
+                    propertyData[obj[0].Address].Principle -= obj[0].Payment;
+                }
+            }
+        })
+
+        res.send(propertyData);
+    })
+
+})
+
 app.listen(5000, () => console.log('Server on port 5000'));
