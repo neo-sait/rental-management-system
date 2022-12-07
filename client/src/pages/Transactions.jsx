@@ -2,23 +2,34 @@ import './style.css'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import { Sidebar } from '../components';
+import { Sidebar, EditTransaction } from '../components';
 import LoginCheck from '../modules/LoginCheck';
-import { AiOutlineReload } from 'react-icons/ai';
+import { MdMode } from 'react-icons/md';
+import { BsFillTrashFill } from 'react-icons/bs'
 
 const Transactions = () => {
   const [dataArr, setDataArr] = useState([])
   const [order, setOrder] = useState("asc");
-  const [searchChosen,setSearchChosen] = useState("None");
+  const [searchChosen, setSearchChosen] = useState("None");
   const [searchType, setSearchType] = useState("None");
   const [filterOption, setFilterOption] = useState([]);
   const [filterResults, setFilterResults] = useState([]);
+  const [popUp, setPopUp] = useState(false);
+  const [data, setData] = useState([]);
+  const [id,setId] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(50);
-  const navigate = useNavigate();
 
-  let auth = localStorage.getItem("auth");
+  const [addressData, setAddressData] = useState([]);
+  const [nameData, setNameData] = useState([]);
+  const [methodData, setMethodData] = useState([]);
+  const [descData, setDescData] = useState([]);
+  const [typeData, setTypeData] = useState([]);
+  const [houseData, setHouseData] = useState([]);
+
+
+  const navigate = useNavigate();
 
   LoginCheck(navigate);
   useEffect(async () => {
@@ -27,6 +38,30 @@ const Transactions = () => {
 
       axios.get('http://localhost:5000/api/loadTransactions').then((res) => {
         setDataArr(res.data);
+      })
+
+      axios.get("http://localhost:5000/api/getAddresses").then(res => {
+        setAddressData(res.data);
+      })
+
+      axios.get("http://localhost:5000/api/getNames").then(res => {
+        setNameData(res.data);
+      })
+
+      axios.get("http://localhost:5000/api/getMethods").then(res => {
+        setMethodData(res.data);
+      })
+
+      axios.get("http://localhost:5000/api/getDescriptions").then(res => {
+        setDescData(res.data);
+      })
+
+      axios.get("http://localhost:5000/api/getTypes").then(res => {
+        setTypeData(res.data);
+      })
+
+      axios.get("http://localhost:5000/api/getHouseNumber").then(res => {
+        setHouseData(res.data);
       })
 
     }
@@ -42,63 +77,50 @@ const Transactions = () => {
     };
 
   };
-  // sorts columns of table
-  const sorting = (col) => {
 
+  // state changers
+  const saveData = (id, json) => {
+    dataArr.forEach(obj => {
+      if (obj[1] == id) {
+        obj[0] = json;
+        axios.post("http://localhost:5000/api/setTransaction",{id: id,data:json});
+        setPopUp(false);
+      }
+    })
+  }
 
-    if (order === "asc") {
-      const sorted = [...dataArr].sort(
-        (a, b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col] ? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
-      );
-      setDataArr(sorted);
-      setOrder("desc");
-    }
-    else if (order === "desc") {
-      const sorted = [...dataArr].sort(
-        (a, b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col] ? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
-      );
-      setDataArr(sorted);
-      setOrder("asc");
-    }
-  };
+  const deleteData = (id) => {
+    setDataArr(dataArr.filter(obj => obj[1] != id));
+    axios.post("http://localhost:5000/api/deleteTransaction",{id: id});
+  }
 
   const selectSearchType = event => {
     setSearchChosen(event.target.value);
 
-    switch(event.target.value){
+    switch (event.target.value) {
       case "None":
         setFilterOption([]);
         setSearchType("None");
         break;
       case "Address":
-        axios.get("http://localhost:5000/api/getAddresses").then(res=>{
-          setFilterOption(res.data);
+          setFilterOption(addressData);
           setSearchType("Address");
-        })
         break;
       case "Name":
-        axios.get("http://localhost:5000/api/getNames").then(res=>{
-          setFilterOption(res.data);
+          setFilterOption(nameData);
           setSearchType("PayerName");
-        })
         break;
       case "Method":
-        axios.get("http://localhost:5000/api/getMethods").then(res=>{
-          setFilterOption(res.data);
+          setFilterOption(methodData);
           setSearchType("PaymentMethod");
-        })
-        break; 
+        break;
       case "Desc":
-        axios.get("http://localhost:5000/api/getDescriptions").then(res=>{
-          setFilterOption(res.data);
+          setFilterOption(descData);
           setSearchType("Desc");
-        })
         break;
       case "Type":
-        axios.get("http://localhost:5000/api/getTypes").then(res=>{
-          setFilterOption(res.data);
+          setFilterOption(typeData);
           setSearchType("Type");
-        })
         break;
     }
   }
@@ -106,12 +128,12 @@ const Transactions = () => {
   const selectOptionType = event => {
     const option = event.target.value;
 
-    switch(searchType){
+    switch (searchType) {
       case "None":
         setFilterResults([]);
         break;
       default:
-        setFilterResults(dataArr.filter(obj=>
+        setFilterResults(dataArr.filter(obj =>
           obj[0][searchType] == option
         ))
     }
@@ -129,6 +151,29 @@ const Transactions = () => {
     pageNumbers.push(i);
   }
 
+  // sorts columns of table
+  const sorting = (col) => {
+
+    if (order === "asc") {
+      const sorted = [...list].sort(
+        (a, b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col] ? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
+      );
+      setOrder("desc");
+    }
+    else if (order === "desc") {
+      const sorted = [...list].sort(
+        (a, b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col] ? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
+      );
+      setOrder("asc");
+    }
+  };
+
+  const edit = (data) => {
+    setData(data[0]);
+    setId(data[1]);
+    setPopUp(true);
+  }
+
   return (
 
 
@@ -139,6 +184,16 @@ const Transactions = () => {
             bg-white">
         <Sidebar />
       </div>
+
+      <EditTransaction trigger={popUp} setTrigger={setPopUp} data={data} options={ 
+        {
+          address: addressData,
+          name: nameData,
+          method: methodData,
+          desc: descData,
+          type: typeData,
+          house: houseData
+      } } saveData={saveData} id={id} />
 
       <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
 
@@ -167,7 +222,7 @@ const Transactions = () => {
                     <td>
                       <select className="trans__input" onChange={selectOptionType}>
                         <option value="None">None</option>
-                        {filterOption.map(obj=>
+                        {filterOption.map(obj =>
                           <option value={obj}>{obj}</option>
                         )}
                       </select>
@@ -185,9 +240,6 @@ const Transactions = () => {
                   <th onClick={() => sorting("HouseNum")}>House #</th>
                   <th onClick={() => sorting("Date")}>Date</th>
                   <th onClick={() => sorting("DatePaid")}>Date Paid</th>
-                  {/*  <th onClick={()=>sorting("Year")}>Year</th>
-            <th>Month</th>
-            <th onClick={()=>sorting("YearNum")}>Year #</th>*/ }
                   <th onClick={() => sorting("PayerName")}>Name</th>
                   <th onClick={() => sorting("PayerTitle")}>Title</th>
                   <th onClick={() => sorting("Payment")}>Payment</th>
@@ -195,6 +247,8 @@ const Transactions = () => {
                   <th onClick={() => sorting("Desc")}>Desc</th>
                   <th onClick={() => sorting("Type")}>Type</th>
                   <th>Notes</th>
+                  <th></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -212,8 +266,9 @@ const Transactions = () => {
                     <td>{val[0].Desc}</td>
                     <td>{val[0].Type}</td>
                     <td>{hoverNote(val[0].Notes)}</td>
+                    <td className="trans__btn"><button onClick={() => { edit(val) }}><MdMode /></button></td>
+                    <td className="trans__btn"><button onClick={() => { deleteData(val[1]) }}><BsFillTrashFill /></button></td>
                   </tr>
-
                 ))}
               </tbody>
             </table>
@@ -239,13 +294,8 @@ const Transactions = () => {
               </ul>
             </nav>
           </div>
-
-
         </div>
-
-
       </div>
-
     </div>
 
   );

@@ -270,9 +270,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="list__input" value={val[`Payer Name`]} readOnly></input>
-                      <button className="list__edit" onClick={ () => {this.editInput("payer",val.id)}}>Edit</button>
-                      <button className="list__delete" onClick={() => {this.deleteList("payer",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" placeholder={val[`Payer Name`]} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("payer",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("payer",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
@@ -298,9 +298,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="list__input" value={val[`House Number`]} readOnly></input>
-                      <button className="list__edit" onClick={ () => {this.editInput("house",val.id)}}>Edit</button>
-                      <button className="list__delete" onClick={() => {this.deleteList("house",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" placeholder={val[`House Number`]} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("house",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("house",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
@@ -326,9 +326,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="list__input" value={val[`Description`]} readOnly></input>
-                      <button className="list__edit" onClick={ () => {this.editInput("desc",val.id)}}>Edit</button>
-                      <button className="list__delete" onClick={() => {this.deleteList("desc",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" placeholder={val[`Description`]} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("desc",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("desc",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
@@ -354,9 +354,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="list__input" value={val[`Type`]} readOnly></input>
-                      <button className="list__edit" onClick={ () => {this.editInput("type",val.id)}}>Edit</button>
-                      <button className="list__delete" onClick={() => {this.deleteList("type",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" placeholder={val[`Type`]} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("type",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("type",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
@@ -382,9 +382,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="list__input" value={val[`Title`]} readOnly></input>
-                      <button className="list__edit" onClick={ () => {this.editInput("title",val.id)}}>Edit</button>
-                      <button className="list__delete" onClick={() => {this.deleteList("title",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" placeholder={val[`Title`]} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("title",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("title",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
@@ -410,9 +410,9 @@ class Lists extends Component{
     
                   <tr key={val.id}>
                     <td>
-                    <input type="text" className="list__input" value={val[`Payment Method`]} readOnly></input>
-                      <button className="list__edit" onClick={ () => {this.editInput("payment",val.id)}}>Edit</button>
-                      <button className="list__delete" onClick={() => {this.deleteList("payment",val.id)}}>Delete</button>
+                    <input type="text" className="list__input" placeholder={val[`Payment Method`]} id={"input"+val.id}  readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("payment",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("payment",val.id)}}>Delete</button>
                     </td>
                   </tr>
     

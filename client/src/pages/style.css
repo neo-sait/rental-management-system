@@ -471,6 +471,11 @@
     font-size: 14px;
 }
 
+.trans__btn{
+    margin-left: 50px;
+}
+
+
 .trans__table thead{
     color: #ffffff;
     background: #324960;

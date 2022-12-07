@@ -291,6 +291,18 @@ app.get('/api/getDescriptions',(req,res)=>{
     })
 })
 
+app.get('/api/getHouseNumber',(req,res)=>{
+    let house = [];
+    firestore.getAll("Lists").then(result=>{
+        result.forEach(obj=>{
+            if ("House Number" in obj[0]){
+                house.push(obj[0]["House Number"]);
+            }
+        })
+        res.send(house);
+    })
+})
+
 app.get('/api/getTypes',(req,res)=>{
     let types = [];
     firestore.getAll("Lists").then(result=>{
@@ -357,6 +369,20 @@ app.post('/api/calculateData',(req,res)=>{
         res.send(propertyData);
     })
 
+})
+
+app.post('/api/setTransaction',(req,res)=>{
+    const id = req.body.id;
+    const data = req.body.data;
+
+    firestore.set("Transactions",id,data);
+    res.send(true);
+})
+
+app.post('/api/deleteTransaction',(req,res)=>{
+    const id = req.body.id;
+
+    firestore.remove("Transactions",id);
 })
 
 app.listen(5000, () => console.log('Server on port 5000'));
