@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import "./style.css"
-
+import { ipAddress } from '../App';
 const Login = () => {
 
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ const Login = () => {
 
     let auth = localStorage.getItem("auth");
       
-    axios.post('http://localhost:5000/api/authenticate', { id: auth }).then( (authed)=>{
+    axios.post('http://' + ipAddress + ':5000/api/authenticate', { id: auth }).then( (authed)=>{
       if (authed.data == true){
         navigate("/profiles");
       }
@@ -21,7 +21,7 @@ const Login = () => {
 
     const login = event => {
         console.log("logging in")
-        axios.post('http://localhost:5000/login', {
+        axios.post('http://' + ipAddress + ':5000/login', {
             email: email,
             pass: password
         }).then((response) => {

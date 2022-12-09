@@ -6,7 +6,7 @@ import { Sidebar, EditTransaction } from '../components';
 import LoginCheck from '../modules/LoginCheck';
 import { MdMode } from 'react-icons/md';
 import { BsFillTrashFill } from 'react-icons/bs'
-
+import { ipAddress } from '../App';
 const Transactions = () => {
   const [dataArr, setDataArr] = useState([])
   const [order, setOrder] = useState("asc");
@@ -32,35 +32,36 @@ const Transactions = () => {
   const navigate = useNavigate();
 
   LoginCheck(navigate);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
 
     const onLoad = async () => {
 
-      axios.get('http://localhost:5000/api/loadTransactions').then((res) => {
+      axios.get('http://' + ipAddress + ':5000/api/loadTransactions').then((res) => {
         setDataArr(res.data);
       })
 
-      axios.get("http://localhost:5000/api/getAddresses").then(res => {
+      axios.get("http://" + ipAddress + ":5000/api/getAddresses").then(res => {
         setAddressData(res.data);
       })
 
-      axios.get("http://localhost:5000/api/getNames").then(res => {
+      axios.get("http://" + ipAddress + ":5000/api/getNames").then(res => {
         setNameData(res.data);
       })
 
-      axios.get("http://localhost:5000/api/getMethods").then(res => {
+      axios.get("http://" + ipAddress + ":5000/api/getMethods").then(res => {
         setMethodData(res.data);
       })
 
-      axios.get("http://localhost:5000/api/getDescriptions").then(res => {
+      axios.get("http://" + ipAddress + ":5000/api/getDescriptions").then(res => {
         setDescData(res.data);
       })
 
-      axios.get("http://localhost:5000/api/getTypes").then(res => {
+      axios.get("http://" + ipAddress + ":5000/api/getTypes").then(res => {
         setTypeData(res.data);
       })
 
-      axios.get("http://localhost:5000/api/getHouseNumber").then(res => {
+      axios.get("http://" + ipAddress + ":5000/api/getHouseNumber").then(res => {
         setHouseData(res.data);
       })
 
@@ -83,7 +84,7 @@ const Transactions = () => {
     dataArr.forEach(obj => {
       if (obj[1] == id) {
         obj[0] = json;
-        axios.post("http://localhost:5000/api/setTransaction",{id: id,data:json});
+        axios.post("http://" + ipAddress + ":5000/api/setTransaction",{id: id,data:json});
         setPopUp(false);
       }
     })
@@ -91,7 +92,7 @@ const Transactions = () => {
 
   const deleteData = (id) => {
     setDataArr(dataArr.filter(obj => obj[1] != id));
-    axios.post("http://localhost:5000/api/deleteTransaction",{id: id});
+    axios.post("http://" + ipAddress + ":5000/api/deleteTransaction",{id: id});
   }
 
   const selectSearchType = event => {

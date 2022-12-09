@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import LoginCheck from '../modules/LoginCheck';
 import axios from 'axios'
 import "./style.css"
+import { ipAddress } from '../App';
 
 const NewTransaction = () => {
   var newTransactionsLoaded = false;
@@ -26,7 +27,7 @@ const NewTransaction = () => {
 
   const addTransaction = event => {
     event.preventDefault();
-    axios.get('http://localhost:5000/api/getTransactionCounter').then((res) => {
+    axios.get('http://' + ipAddress + ':5000/api/getTransactionCounter').then((res) => {
       console.log(res);
       const newTransact = {
         Address: document.getElementById('tAdd').value,
@@ -46,7 +47,7 @@ const NewTransaction = () => {
 
       };
       console.log(newTransact);
-      axios.post('http://localhost:5000/api/newTransaction', newTransact).then((res) => { });
+      axios.post('http://' + ipAddress + ':5000/api/newTransaction', newTransact).then((res) => { });
     });
     alert('New transaction created');
 
@@ -57,7 +58,7 @@ const NewTransaction = () => {
     if (!newTransactionsLoaded) {
       console.log('lists pulled');
       newTransactionsLoaded = true;
-      axios.get('http://localhost:5000/api/getList').then((res) => {
+      axios.get('http://' + ipAddress + ':5000/api/getList').then((res) => {
         const arr = res.data;
         arr.forEach((listObj) => {
           console.log('drop loaded');

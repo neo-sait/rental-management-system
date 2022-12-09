@@ -3,10 +3,13 @@ import axios from 'axios';
 import './style.css';
 import Popup from "../components/Popup";
 import ExpRevChart from "../components/ExpRevChart";
-
+import LoginCheck from '../modules/LoginCheck';
+import { useNavigate } from 'react-router-dom'
 import ProfLossChart from "../components/ProfLossChart";
 import PropChart from "../components/PropertiesChart";
 import PropOChart from "../components/PropertyOverview";
+
+import { ipAddress } from '../App';
 
 import {
   Chart as ChartJS,
@@ -32,7 +35,7 @@ ChartJS.register(
   Legend
 );
 
-var antiLoop = true;
+
 var fullDataArr = [];
 var expAll = [];
 var revAll = [];
@@ -50,11 +53,12 @@ var propMort = [];
 var propInt = [];
 var propPrin = [];
 var propertyData = [];
-
+var antiLoop = true;
 const Overview = () => {
+  const navigate = useNavigate();
+  LoginCheck(navigate);
 
-
-  const [yearDisp, setYearDisp] = useState();
+  const [yearDisp, setYearDisp] = useState(years[0]);
   const [buttonPopup, setButtonPopup] = useState(false);
   const [expRevData, setExpRevData] = useState({exp:expYr, rev:revYr});
   const [propData, setPropData] = useState({labels: properties, rev: propRev, exp: propExp, 
@@ -283,7 +287,7 @@ const Overview = () => {
     if (antiLoop) {
       antiLoop = false;
       console.log("if trig");
-      axios.get('http://localhost:5000/api/loadTransactions').then((res) => {
+      axios.get('http://' + ipAddress + ':5000/api/loadTransactions').then((res) => {
         
         fullDataArr = res.data;
         console.log(fullDataArr);
@@ -299,7 +303,7 @@ const Overview = () => {
           insurance: propIns, tax: propTax, mort: propMort, 
           interest: propInt, principle: propPrin});
         setExpRevData({exp:expYr, rev:revYr});
-        localStorage.setItem("graphdataLoaded", "True");
+        //localStorage.setItem("graphdataLoaded", "True");
         //console.log(expRevData);
         getProperties(fullDataArr);
         loadProfLoss(fullDataArr);

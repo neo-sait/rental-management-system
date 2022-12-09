@@ -52,5 +52,5 @@ const App = () => {
      </Router>
   )
 }
-
+export const  ipAddress = 'localhost'; 
 export default App

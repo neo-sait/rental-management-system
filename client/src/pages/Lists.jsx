@@ -8,6 +8,7 @@ import axios from 'axios';
 import { Sidebar } from '../components';
 import "./style.css"
 import { throws } from 'assert';
+import { ipAddress } from '../App';
 
 // this is the class component version of the OldLists.jsx
 
@@ -31,19 +32,19 @@ class Lists extends Component{
         this.appendToList = (type,json) => this.setState(state=>{
           let list;
 
-        if (type == "address"){
+        if (type === "address"){
             list = state.addressArr.push(json);
-        }else if (type == "payer"){
+        }else if (type === "payer"){
           list = state.payerArr.push(json);
-        }else if (type == "house"){
+        }else if (type === "house"){
           list = state.houseArr.push(json);
-        }else if (type == "desc"){
+        }else if (type === "desc"){
           list = state.descArr.push(json);
-        }else if (type == "type") {
+        }else if (type === "type") {
           list = state.typeArr.push(json);
-        }else if (type == "title") {
+        }else if (type === "title") {
           list = state.titleArr.push(json);
-        }else if (type == "payment"){
+        }else if (type === "payment"){
           list = state.paymentArr.push(json);
         }
 
@@ -52,19 +53,19 @@ class Lists extends Component{
 
         this.valueIsUnique = (source,value) =>{
           let duplicates;
-          if (source == "address"){
+          if (source === "address"){
             duplicates = this.state.addressArr.filter(obj => obj.Address == value);
-          }else if (source == "payer"){
+          }else if (source === "payer"){
             duplicates = this.state.payerArr.filter(obj => obj["Payer Name"] == value);
-          }else if (source == "house"){
+          }else if (source === "house"){
             duplicates = this.state.houseArr.filter(obj => obj["House Number"] == value);
-          }else if (source == "desc"){
+          }else if (source === "desc"){
             duplicates = this.state.descArr.filter(obj => obj["Description"] == value);
-          }else if (source == "type") {
+          }else if (source === "type") {
             duplicates = this.state.typeArr.filter(obj => obj.Type == value);
-          }else if (source == "title") {
+          }else if (source === "title") {
             duplicates = this.state.titleArr.filter(obj => obj.Title == value);
-          }else if (source == "payment"){
+          }else if (source === "payment"){
             duplicates = this.state.paymentArr.filter(obj => obj["Payment Method"] == value);
           }
 
@@ -86,7 +87,7 @@ class Lists extends Component{
           if (this.valueIsUnique(source,entry.value) == false) {
             window.alert("Input already exists in list.");
           }else if (entry.value.length > 0){
-            axios.post('http://localhost:5000/api/addToLists',{listType: source, input: entry.value}).then( res =>{
+            axios.post('http://' + ipAddress + ':5000/api/addToLists',{listType: source, input: entry.value}).then( res =>{
               const data = res.data;
               let json;
             
@@ -148,7 +149,7 @@ class Lists extends Component{
             this.setState({paymentArr: filter});
           }
           
-          axios.post('http://localhost:5000/api/removeFromLists',{target: id})
+          axios.post('http://' + ipAddress + ':5000/api/removeFromLists',{target: id})
         }
 
         this.editInput = (type,id) =>{
@@ -160,7 +161,7 @@ class Lists extends Component{
           document.getElementById("input"+id).readOnly = true;
           
           if (document.getElementById("input"+id).placeholder != document.getElementById("input"+id).value){
-            axios.post('http://localhost:5000/api/editFromLists',{id: id, type: type, input: document.getElementById("input"+id).value});
+            axios.post('http://' + ipAddress + ':5000/api/editFromLists',{id: id, type: type, input: document.getElementById("input"+id).value});
             document.getElementById("input"+id).placeholder = document.getElementById("input"+id).value;
           }
         }else{
@@ -174,7 +175,7 @@ class Lists extends Component{
     componentDidMount(){
       LoginCheck(this.props.navigate);
 
-        axios.get('http://localhost:5000/api/getList').then( (res) =>{
+        axios.get('http://' + ipAddress + ':5000/api/getList').then( (res) =>{
             const arr = res.data;
 
             arr.forEach( (listObj) => {

@@ -4,8 +4,8 @@ import { Sidebar } from '../components';
 import LoginCheck from '../modules/LoginCheck';
 import axios from 'axios'
 import papa from 'papaparse';
+import { ipAddress } from '../App';
 import "./style.css"
-
 let file = null;
 var dataArr = [];
 let output = [];
@@ -18,6 +18,7 @@ const handleChange = ({ target: { files } }) => {
 };
 
 const importCSV = () => {
+
   if (file != null){
     let display = document.getElementById("display");
     console.log(file, "file");
@@ -27,8 +28,11 @@ const importCSV = () => {
       header: true,
       complete: function (responses) {
         console.log(responses.data.length)
+        console.log(responses.data)
         output = responses.data;
-  
+        axios.post('http://' + ipAddress + ':5000/api/importCSV', responses.data).then((res) => {
+            console.log(res.data);
+          });
         // express has a limit on sending data through post requests, the idea is to seperate the imported dataset into chunks
         // this should allow YEARS of archived data to be sent through with ease, regardless if the size exceeds the limit.
         let chunkSize = 100;
@@ -60,8 +64,8 @@ const Import = () => {
   useEffect(async()=>{
     LoginCheck(navigate);
   },[])
-
   return (
+
     <div className="App flex">
 
       <div className="w-72 sidebar

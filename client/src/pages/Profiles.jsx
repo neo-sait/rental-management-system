@@ -7,6 +7,7 @@ import { AiOutlineReload } from 'react-icons/ai'
 import LoginCheck from '../modules/LoginCheck';
 import { MdMode } from 'react-icons/md';
 import './style.css'
+import { ipAddress } from '../App';
 
 let dataArrInit = []
 
@@ -34,7 +35,7 @@ const Profiles = () => {
     if (dataArrInit.length != parseInt(localStorage.getItem(count))) {
       dataArrInit = []
 
-      axios.get('http://localhost:5000/api/loadTenants').then((res) => {
+      axios.get('http://' + ipAddress + ':5000/api/loadTenants').then((res) => {
         dataArrInit = res.data;
 
         console.log('swapping added to array')
