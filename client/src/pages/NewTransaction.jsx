@@ -36,7 +36,7 @@ const NewTransaction = () => {
         Desc: document.getElementById('tDesc').value,
         HouseNum: document.getElementById('tNum').value,
         Notes: document.getElementById('tNote').value,
-        Number: res.data.counter + 1,
+        Number: res.data[0].counter + 1,
         PayerName: document.getElementById('tPayer').value,
         PayerTitle: document.getElementById('tTitle').value,
         Payment: parseFloat(document.getElementById('tPay').value),
@@ -106,7 +106,7 @@ const NewTransaction = () => {
       })
     }
 
-  });
+  },[]);
 
   return (
     <div className="App flex">
@@ -206,6 +206,10 @@ const NewTransaction = () => {
                 <tr>
                   <td><input type="date" id='tDatePaid' name='tDatePaid' className="newtrans__date"></input></td>
                   <td><input type="date" id='tDateCharged' name='tDateCharged' className="newtrans__date"></input></td>
+                </tr>
+
+                <tr>
+                  <td><input type="text" name='tNote' id='tNote' placeholder='Note' className="newtrans__select"/></td>
                 </tr>
 
                 <tr>

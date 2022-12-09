@@ -31,7 +31,7 @@ const Profiles = () => {
 
   LoginCheck(navigate);
   useEffect(async () => {
-
+    LoginCheck(navigate);
     if (dataArrInit.length != parseInt(localStorage.getItem(count))) {
       dataArrInit = []
 

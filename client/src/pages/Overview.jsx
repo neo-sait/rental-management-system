@@ -4,7 +4,7 @@ import './style.css';
 import Popup from "../components/Popup";
 import ExpRevChart from "../components/ExpRevChart";
 import LoginCheck from '../modules/LoginCheck';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import ProfLossChart from "../components/ProfLossChart";
 import PropChart from "../components/PropertiesChart";
 import PropOChart from "../components/PropertyOverview";
@@ -281,8 +281,10 @@ const Overview = () => {
     //console.log(expYr[5]);
   }
 
+  LoginCheck(navigate);
   //initial load of data
   useEffect(() => {
+    LoginCheck(navigate);
     console.log("if checked");
     if (antiLoop) {
       antiLoop = false;
@@ -310,8 +312,7 @@ const Overview = () => {
         setprofLossData({labels:years,rev:revAll,exp:expAll,prof:profAll,loss:lossAll});
       })
     }
-  }
-  )
+  },[])
 
   return (
 
