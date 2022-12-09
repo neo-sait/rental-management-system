@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
-import axios from 'axios'
+import axios from 'axios';
+import './style.css';
+import Popup from "../components/Popup";
+import ExpRevChart from "../components/ExpRevChart";
+
+import ProfLossChart from "../components/ProfLossChart";
+import PropChart from "../components/PropertiesChart";
+import PropOChart from "../components/PropertyOverview";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,124 +32,280 @@ ChartJS.register(
   Legend
 );
 
+var antiLoop = true;
 var fullDataArr = [];
+var expAll = [];
+var revAll = [];
+var profAll = [];
+var lossAll = [];
 var expYr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var revYr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var years = [];
+var properties = [];
+var propExp = [];
+var propRev = [];
+var propIns = [];
+var propTax = [];
+var propMort = [];
+var propInt = [];
+var propPrin = [];
+var propertyData = [];
 
 const Overview = () => {
 
+
+  const [yearDisp, setYearDisp] = useState();
+  const [buttonPopup, setButtonPopup] = useState(false);
+  const [expRevData, setExpRevData] = useState({exp:expYr, rev:revYr});
+  const [propData, setPropData] = useState({labels: properties, rev: propRev, exp: propExp, 
+                                            insurance: propIns, tax: propTax, mort: propMort, 
+                                            interest: propInt, principle: propPrin});
+  const [profLossData, setprofLossData] = useState({labels:years,rev:revAll,exp:expAll,
+                                                    prof:profAll,loss:lossAll});
   //clears current year data and passes on data array to be proccessed.
+  
+
+  function getProperties(arr){
+    var props = []
+    arr.forEach(elem => {
+      console.log(elem[0].Address);
+      if(!props.includes(elem[0].Address) && elem[0].Address !== 'Other' && !('counter' in elem[0])){
+        console.log(elem[0].Address + " added");
+        props.push(elem[0].Address);
+      }
+    });
+
+    props.sort(function (a, b) {
+      if (a < b) {
+        return -1;
+      }
+      if (a > b) {
+        return 1;
+      }
+      return 0;
+    });
+    //props.pop();
+    //console.log(props)
+    return props;
+  }
+
+  function getYears(arr){
+      var yearsArr = []
+
+      arr.forEach(elem => {
+        if(!yearsArr.includes(parseInt(elem[0].Year)) && !isNaN(elem[0].Year)){
+          //console.log(elem[0].Year + " added");
+          yearsArr.push(parseInt(elem[0].Year));
+        }
+      });
+
+      yearsArr.sort(function(a, b){return a - b});
+      return yearsArr;
+  }
+
+  // processes revenue vs expense in dataset for specific year
+  function procExpRev(elem, yr) {
+
+    if (parseInt(elem.Year) === yr && elem.Type === "Expense") {
+      //console.log('exp found');
+      expYr[parseInt(elem.Month) - 1] += parseFloat(elem.Payment);
+      //console.log(elem.Month + " now " + revYr[parseInt(elem.Month) - 1]);
+
+    } else if (parseInt(elem.Year) === yr && elem.Type === "Revenue") {
+      //console.log('rev found');
+      revYr[parseInt(elem.Month) - 1] += parseFloat(elem.Payment);
+      //console.log(elem.Month + " now " + revYr[parseInt(elem.Month) - 1]);
+    }
+
+  }
+
+  function procProfLoss(elem){
+      switch (elem.Type){
+        case "Expense":
+          expAll[years.indexOf(parseInt(elem.Year))] += parseFloat(elem.Payment);
+          break;
+        case "Revenue":
+          revAll[years.indexOf(parseInt(elem.Year))] += parseFloat(elem.Payment);
+          break;
+        default:
+      }
+  }
+
+  function procProp(elem, yr){
+    
+    switch(elem.Desc){
+      case "Monthly Rent Paid":
+        if(parseInt(elem.Year) === yr){
+          propRev[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Community Fee":
+        if(parseInt(elem.Year) === yr){
+          propExp[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Condo Fee":
+        if(parseInt(elem.Year) === yr){
+          propExp[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Property Tax":
+        if(parseInt(elem.Year) === yr){
+          propTax[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Expense":
+        if(parseInt(elem.Year) === yr){
+          propExp[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Interest":
+        if(parseInt(elem.Year) === yr){
+          propInt[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Insurance":
+          if(parseInt(elem.Year) === yr){
+            propIns[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+          };
+          break;
+      case "Utilities":
+        if(parseInt(elem.Year) === yr){
+          propExp[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      case "Mortgage":
+        if(parseInt(elem.Year) === yr){
+          propMort[properties.indexOf(elem.Address)] += parseFloat(elem.Payment);
+        };
+        break;
+      default:
+        break;
+    }
+
+
+  }
+  function procPrinciple(props){
+    props.forEach(elem => {
+      propPrin[props.indexOf(elem)] = parseFloat(propMort[props.indexOf(elem)]) - parseFloat(propInt[props.indexOf(elem)]);
+
+    });
+  }
+
+  function loadProfLoss(dataArr){ 
+    var i = 0;
+
+    years.forEach(elem => {
+      expAll.push(0);
+      revAll.push(0);
+      lossAll.push(0);
+      profAll.push(0);
+    });
+
+    dataArr.forEach(elem => { procProfLoss(elem[0])});
+    years.forEach(elem => {
+      var profLoss  = revAll[i] - expAll[i];
+      if(profLoss < 0){
+        lossAll[i] = -profLoss;
+      }else{
+        profAll[i] = profLoss;
+      }
+      i++;
+    });
+
+  }
+
+  function loadPropData(yr){
+    propExp = [];
+    propRev = [];
+    propIns = [];
+    propTax = [];
+    propMort = [];
+    propInt = [];
+    propPrin = [];
+    propertyData = [];
+
+    properties.forEach(element => { propExp.push(0);
+                                    propRev.push(0);
+                                    propIns.push(0);
+                                    propTax.push(0);
+                                    propMort.push(0);
+                                    propInt.push(0);
+                                    propPrin.push(0);
+                                    propertyData.push(0);});
+    
+    fullDataArr.forEach(element => procProp(element[0], yr));
+    procPrinciple(properties);
+  }
+
+  
+
   function loadExpVRev(yr) {
     expYr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     revYr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     fullDataArr.forEach(element => procExpRev(element[0], yr));
   }
-  // processes revenue vs expense in dataset for specific year
-  function procExpRev(elem, yr) {
-
-    if (elem.Year === yr && elem.Type === "Expense") {
-      console.log('exp found');
-      expYr[elem.Month - 1] += elem.Payment;
-      console.log('exp added at m:' + elem.Month);
-
-    } else if (elem.Year === yr && elem.Type === "Revenue") {
-      console.log('rev found');
-      revYr[elem.Month - 1] += elem.Payment;
-      console.log('rev added at m:' + elem.Month);
-    }
-
-  }
-  const [yearDisp, setYearDisp] = useState(2016);
-  const [expRevData, setExpRevData] = useState({
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: 'Expenses',
-      data: expYr,
-      borderColor: 'rgb(153, 0, 0)',
-      backgroundColor: 'rgba(153, 0, 0, .8)',
-    },
-    {
-      label: 'Revenue',
-      data: revYr,
-      borderColor: 'rgb(0, 102, 0)',
-      backgroundColor: 'rgba(0, 102, 0, 0.8)',
-    },],
-  });
+  
 
   //changes data displayed when title is clicked
   function cycleYear(num) {
-    if (num === 2022) {
-      setYearDisp(2016);
-      loadExpVRev(2016);
-      setExpRevData({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-          label: 'Expenses',
-          data: expYr,
-          borderColor: 'rgb(153, 0, 0)',
-          backgroundColor: 'rgba(153, 0, 0, .8)',
-        },
-        {
-          label: 'Revenue',
-          data: revYr,
-          borderColor: 'rgb(0, 102, 0)',
-          backgroundColor: 'rgba(0, 102, 0, 0.8)',
-        },],
-      });
-    } else if (num !== 2022) {
-      setYearDisp(num + 1);
-      loadExpVRev(num + 1);
-      setExpRevData({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-          label: 'Expenses',
-          data: expYr,
-          borderColor: 'rgb(153, 0, 0)',
-          backgroundColor: 'rgba(153, 0, 0, .8)',
-        },
-        {
-          label: 'Revenue',
-          data: revYr,
-          borderColor: 'rgb(0, 102, 0)',
-          backgroundColor: 'rgba(0, 102, 0, 0.8)',
-        },],
-      });
+    if (num > years[years.length-1]) {
+      setYearDisp(years[years.length-1]);
+      loadExpVRev(years[years.length-1]);
+      loadPropData(years[years.length-1]);
+      setExpRevData({exp:expYr, rev:revYr});
+      setPropData({labels: properties, rev: propRev, exp: propExp, 
+        insurance: propIns, tax: propTax, mort: propMort, 
+        interest: propInt, principle: propPrin});
+    } else if (num < years[0]){
+      setYearDisp(years[0]);
+      loadExpVRev(years[0]);
+      loadPropData(years[0]);
+      setExpRevData({exp:expYr, rev:revYr});
+      setPropData({labels: properties, rev: propRev, exp: propExp, 
+        insurance: propIns, tax: propTax, mort: propMort, 
+        interest: propInt, principle: propPrin});
+    }else {
+      setYearDisp(years[years.indexOf(num)]);
+      loadExpVRev(years[years.indexOf(num)]);
+      loadPropData(years[years.indexOf(num)])
+      setExpRevData({exp:expYr, rev:revYr});
+      setPropData({labels: properties, rev: propRev, exp: propExp, 
+        insurance: propIns, tax: propTax, mort: propMort, 
+        interest: propInt, principle: propPrin});
     }
+    //console.log(expYr[5]);
   }
+
   //initial load of data
   useEffect(() => {
-    if (sessionStorage.getItem("arrayLoaded") !== "True") {
-      console.log("if checked");
-      axios.get('http://localhost:5000/api/loadDash').then((res) => {
+    console.log("if checked");
+    if (antiLoop) {
+      antiLoop = false;
+      console.log("if trig");
+      axios.get('http://localhost:5000/api/loadTransactions').then((res) => {
+        
         fullDataArr = res.data;
-        console.log(fullDataArr.length + ' items pulled from db')
         console.log(fullDataArr);
-        loadExpVRev(2016);
-        sessionStorage.setItem("arrayLoaded", "True");
-
-        setExpRevData({
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-          datasets: [{
-            label: 'Expenses',
-            data: expYr,
-            borderColor: 'rgb(153, 0, 0)',
-            backgroundColor: 'rgba(153, 0, 0, .8)',
-          },
-          {
-            label: 'Revenue',
-            data: revYr,
-            borderColor: 'rgb(0, 102, 0)',
-            backgroundColor: 'rgba(0, 102, 0, 0.8)',
-          },],
-        });
-        console.log(expRevData);
-
-
+        years = getYears(fullDataArr);
+        properties = getProperties(fullDataArr);
+        //propertyData = {labels: properties,};
+        setYearDisp(years[0])
+        console.log(years);
+        console.log(fullDataArr.length + ' items pulled from db')
+        loadPropData(years[0]);
+        loadExpVRev(years[0]);
+        setPropData({labels: properties, rev: propRev, exp: propExp, 
+          insurance: propIns, tax: propTax, mort: propMort, 
+          interest: propInt, principle: propPrin});
+        setExpRevData({exp:expYr, rev:revYr});
+        localStorage.setItem("graphdataLoaded", "True");
+        //console.log(expRevData);
+        getProperties(fullDataArr);
+        loadProfLoss(fullDataArr);
+        setprofLossData({labels:years,rev:revAll,exp:expAll,prof:profAll,loss:lossAll});
       })
     }
-
-
-
   }
   )
 
@@ -157,24 +320,47 @@ const Overview = () => {
         <Sidebar />
       </div>
 
-      <div id="page" className="dark:bg-main-bg bg-main-bg min-h-screen w-full ">
-        <div className='justify-evenly mx-20 mb-5'>
-          <div className="w-5/12 h-2/5 float-left m">
-            <div ><h2 onClick={() => cycleYear(yearDisp)}>Expenses and Revenue for {yearDisp}</h2></div>
-            <div id='expvsrev'><Bar data={expRevData} options={{ responsive: true, }} /> </div>
-          </div>
-          <div className="w-5/12 h-2/5 float-right">
-            <div ><h2 onClick={() => cycleYear(yearDisp)}>Expenses and Revenue for {yearDisp}</h2></div>
-            <div id='expvsrev'><Bar data={expRevData} options={{ responsive: true, }} /> </div>
+      <div id="pageOverview">
+
+
+        <div class="GraphContainer">
+           <div class="graph">
+            <div class="popcontainer"><Popup trigger={buttonPopup} setTrigger={setButtonPopup} data={{exp:expYr, rev:revYr}}></Popup></div>
+            <div > <h1 class="graphTitle" >Expenses and Revenue for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
+            <div id='expvsrev'><ExpRevChart datasets={expRevData} /></div>
+          </div>  
+
+
+          <div class="graph">
+            <div ><h1 class="graphTitle" >Property Data for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
+            <div id='expvsrev'><PropOChart datasets={propData} /></div>
           </div>
 
-          <div>
-
-            <div id='expvsrev'><Line data={expRevData} options={{ responsive: true, aspectRatio: 3 }} /> </div>
+          
+          <div class="graph" >  
+            <div ><h1 class="graphTitle" >Profit and Loss</h1></div>
+            <div id='expvsrev'><ProfLossChart datasets={profLossData} />
+            </div>
           </div>
+
+
+          <div class="graph">
+            <div ><h1 class="graphTitle" >Property Data for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
+            <div id='expvsrev'><PropChart datasets={propData} /></div>
+          </div>
+
+
+          
+
+         
+
+
+          
+            
         </div>
+        
       </div>
-
+        
     </div>
   )
 

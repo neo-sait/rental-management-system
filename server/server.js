@@ -4,6 +4,9 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const app = express();
 
+var transactCache = [];
+var cached = false;
+
 app.use(express.json({ limit: 1000000}));
 app.use(cors({
     origin: "http://localhost:3000",
@@ -98,16 +101,32 @@ app.get('/api/loadTenants',(req,res) =>{
 })
 
 app.get('/api/loadTransactions',(req,res) =>{
-    firestore.getAll("Transactions","Number").then((result)=>{
-        res.send(result);
-    })
+    console.log("Load Transactions");
+    console.log("Cache status: " + cached);
+    
+    if(cached){
+        console.log("TRUE - sending cached data");
+        res.send(transactCache);  
+    }else{
+        console.log("NO CACHE");
+        cached = true;
+        firestore.getAll("Transactions","Number").then((result)=>{
+                console.log("FALSE - pulling from db and caching");
+                
+                transactCache = result;
+                res.send(result);
+        })
+    }
+    
+    console.log("done");
 })
 
 // still developing, res input overload
 app.post('/api/importCSV',(req,res)=>{
+    cached = false;
     const output = req.body.out;
 
-    output.forEach(element => firestore.add("TranTest",element));
+    output.forEach(element => firestore.add("Transactions",element));
     res.send(true);
 })
 
@@ -199,7 +218,7 @@ app.get('/api/getTransactionCounter',(req,res)=>{
 })
 
 app.post('/api/newTransaction',(req,res)=>{
-
+        cached = false;
         const input = req.body;
         console.log(input);
         firestore.add("Transaction",input);
@@ -372,6 +391,7 @@ app.post('/api/calculateData',(req,res)=>{
 })
 
 app.post('/api/setTransaction',(req,res)=>{
+    cached = false;
     const id = req.body.id;
     const data = req.body.data;
 
@@ -380,6 +400,7 @@ app.post('/api/setTransaction',(req,res)=>{
 })
 
 app.post('/api/deleteTransaction',(req,res)=>{
+    cached = false;
     const id = req.body.id;
 
     firestore.remove("Transactions",id);

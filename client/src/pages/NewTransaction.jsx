@@ -6,6 +6,7 @@ import axios from 'axios'
 import "./style.css"
 
 const NewTransaction = () => {
+  var newTransactionsLoaded = false;
   const navigate = useNavigate();
   var addysArr = [];
   var housenumArr = [];
@@ -53,9 +54,9 @@ const NewTransaction = () => {
 
   useEffect(() => {
     LoginCheck(navigate);
-    if (localStorage.getItem("newTransactionsLoaded") !== "deleteToLoadDropdowns") {
+    if (!newTransactionsLoaded) {
       console.log('lists pulled');
-      localStorage.setItem("newTransactionsLoaded", "deleteToLoadDropdowns");
+      newTransactionsLoaded = true;
       axios.get('http://localhost:5000/api/getList').then((res) => {
         const arr = res.data;
         arr.forEach((listObj) => {
