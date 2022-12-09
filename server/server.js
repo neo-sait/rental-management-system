@@ -127,6 +127,7 @@ app.post('/api/importCSV',(req,res)=>{
     const output = req.body.out;
 
     output.forEach(element => firestore.add("Transactions",element));
+
     res.send(true);
 })
 
@@ -210,7 +211,7 @@ app.post('/api/editFromLists',(req,res)=>{
 })
 
 app.get('/api/getTransactionCounter',(req,res)=>{
-    firestore.get("Transaction","--Counter--").then((result)=>{
+    firestore.get("Transactions","--Counter--").then((result)=>{
        // firestore.incrementDoc("Transaction","--Counter--");
         res.send(result);
 
@@ -221,9 +222,9 @@ app.post('/api/newTransaction',(req,res)=>{
         cached = false;
         const input = req.body;
         console.log(input);
-        firestore.add("Transaction",input);
-        firestore.incrementDoc("Transaction","--Counter--", input.Number);
-        
+        firestore.add("Transactions",input);
+        firestore.incrementDoc("Transactions","--Counter--", input.Number);
+
 
         res.send(true);
 })
@@ -256,6 +257,13 @@ app.post('/api/saveTenantInformation',(req,res)=>{
                 data[0]["Password"] = password;
                 firestore.set("Tenants",tenant,data[0]);
             })
+        })
+    }else if (req.body.current == null){
+        firestore.get("Tenants",tenant).then(data=>{
+            data[0]["House Number"] = house;
+            data[0]["Email Address"] = email;
+            data[0]["Phone Number"] = phone;
+            firestore.set("Tenants",tenant,data[0]);
         })
     }
 
@@ -404,6 +412,9 @@ app.post('/api/deleteTransaction',(req,res)=>{
     const id = req.body.id;
 
     firestore.remove("Transactions",id);
+    firestore.get("Transactions","--Counter--").then(result=>{
+        firestore.incrementDoc("Transactions","--Counter--",result[0].counter-1);
+    })
 })
 
 app.listen(5000, () => console.log('Server on port 5000'));

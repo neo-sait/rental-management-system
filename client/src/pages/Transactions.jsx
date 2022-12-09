@@ -101,6 +101,7 @@ const Transactions = () => {
       case "None":
         setFilterOption([]);
         setSearchType("None");
+        setFilterResults([]);
         break;
       case "Address":
           setFilterOption(addressData);
@@ -130,7 +131,7 @@ const Transactions = () => {
 
     switch (searchType) {
       case "None":
-        setFilterResults([]);
+        setFilterResults(dataArr);
         break;
       default:
         setFilterResults(dataArr.filter(obj =>
