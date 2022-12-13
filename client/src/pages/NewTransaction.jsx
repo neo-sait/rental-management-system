@@ -28,7 +28,7 @@ const NewTransaction = () => {
   const addTransaction = event => {
     event.preventDefault();
     axios.get('http://' + ipAddress + ':5000/api/getTransactionCounter').then((res) => {
-      console.log(res);
+      //console.log(res);
       const newTransact = {
         Address: document.getElementById('tAdd').value,
         Date: document.getElementById('tDateCharged').value,
@@ -42,12 +42,12 @@ const NewTransaction = () => {
         Payment: parseFloat(document.getElementById('tPay').value),
         PaymentMethod: document.getElementById('tMethod').value,
         Type: document.getElementById('tType').value,
-        Month: document.getElementById('tDatePaid').value.substring(5, 7),
-        Year: document.getElementById('tDatePaid').value.substring(0, 4),
+        Month: document.getElementById('tDateCharged').value.substring(5, 7),
+        Year: document.getElementById('tDateCharged').value.substring(0, 4),
 
       };
-      console.log(newTransact);
-      axios.post('http://' + ipAddress + ':5000/api/newTransaction', newTransact).then((res) => { });
+      //console.log(newTransact);
+      axios.post('http://' + ipAddress + ':5000/api/newTransaction', newTransact).then((res) => {localStorage.setItem("reloadFlag",'True');});
     });
     alert('New transaction created');
 
@@ -56,12 +56,12 @@ const NewTransaction = () => {
   useEffect(() => {
     LoginCheck(navigate);
     if (!newTransactionsLoaded) {
-      console.log('lists pulled');
+      //console.log('lists pulled');
       newTransactionsLoaded = true;
       axios.get('http://' + ipAddress + ':5000/api/getList').then((res) => {
         const arr = res.data;
         arr.forEach((listObj) => {
-          console.log('drop loaded');
+          //console.log('drop loaded');
           if ('Address' in listObj[0]) {
             addysArr.push({ Address: listObj[0].Address, id: listObj[1] });
           }
@@ -88,13 +88,13 @@ const NewTransaction = () => {
           }
         })
         //debug lines
-        console.log(addysArr);
-        console.log(housenumArr);
-        console.log(pNameArr);
-        console.log(descsArr);
-        console.log(typesArr);
-        console.log(titlesArr);
-        console.log(methodsArr);
+        //console.log(addysArr);
+        //console.log(housenumArr);
+        //console.log(pNameArr);
+        //console.log(descsArr);
+        //console.log(typesArr);
+        //console.log(titlesArr);
+        //console.log(methodsArr);
         //update states
         setAddys(addysArr);
         setNums(housenumArr);
@@ -127,7 +127,7 @@ const NewTransaction = () => {
               <tbody>
                 <tr>
                   <td>
-                    <select name="tpayer" id="tPayer" placeholder='other' className="newtrans__select">
+                    <select name="tpayer" id="tPayer" placeholder='other' className="newtrans__select" required>
                       {pName.map((val) => (
                         <option value={val.Name}>{val.Name}</option>
                       ))}
@@ -135,7 +135,7 @@ const NewTransaction = () => {
                     </select>
                   </td>
                   <td>
-                    <select name="tTitle" id="tTitle" className="newtrans__select">
+                    <select name="tTitle" id="tTitle" className="newtrans__select" required>
                       {titles.map((val) => (
                         <option value={val.Title}>{val.Title}</option>
                       ))}
@@ -146,7 +146,7 @@ const NewTransaction = () => {
 
                 <tr>
                   <td>
-                    <select name="tAdd" id="tAdd" className="newtrans__select">
+                    <select name="tAdd" id="tAdd" placeholder='other' className="newtrans__select" required>
                       {addys.map((val) => (
                         <option value={val.Address}>{val.Address}</option>
                       ))}
@@ -154,7 +154,7 @@ const NewTransaction = () => {
                     </select>
                   </td>
                   <td>
-                    <select name="tNum" id="tNum" className="newtrans__select">
+                    <select name="tNum" id="tNum" placeholder='other'  className="newtrans__select" required>
                       {housenum.map((val) => (
                         <option value={val.Number}>{val.Number}</option>
                       ))}
@@ -165,7 +165,7 @@ const NewTransaction = () => {
 
                 <tr>
                   <td>
-                    <select name="tDesc" id="tDesc" className="newtrans__select">
+                    <select name="tDesc" id="tDesc" className="newtrans__select" required>
                       {descs.map((val) => (
                         <option value={val.Description}>{val.Description}</option>
                       ))}
@@ -173,18 +173,18 @@ const NewTransaction = () => {
                     </select>
                   </td>
                   <td>
-                    <select name="tType" id="tType" className="newtrans__select">
+                    <select name="tType" id="tType" className="newtrans__select" required>
                       {types.map((val) => (
                         <option value={val.Type}>{val.Type}</option>
                       ))}
-                      <option value="other" disabled selected hidden>Transaction Type</option>
+                      <option value="other" disabled selected hidden >Transaction Type</option>
                     </select>
                   </td>
                 </tr>
 
                 <tr>
                   <td>
-                    <select name="tMethod" id="tMethod" className="newtrans__select">
+                    <select name="tMethod" id="tMethod" className="newtrans__select" required>
                       {methods.map((val) => (
                         <option value={val.Method}>{val.Method}</option>
                       ))}
@@ -194,7 +194,7 @@ const NewTransaction = () => {
                   </td>
 
                   <td>
-                    <input type="number" name='tPay' id='tPay' step="0.01" placeholder='Payment' className="newtrans__select" />
+                    <input type="number" name='tPay' id='tPay' step="0.01" placeholder='Payment' className="newtrans__select" required/>
                   </td>
                 </tr>
 
@@ -204,8 +204,8 @@ const NewTransaction = () => {
                 </tr>
 
                 <tr>
-                  <td><input type="date" id='tDatePaid' name='tDatePaid' className="newtrans__date"></input></td>
-                  <td><input type="date" id='tDateCharged' name='tDateCharged' className="newtrans__date"></input></td>
+                  <td><input type="date" id='tDateCharged' name='tDateCharged' className="newtrans__date" required></input></td>
+                  <td><input type="date" id='tDatePaid' name='tDatePaid' className="newtrans__date" ></input></td>
                 </tr>
 
                 <tr>

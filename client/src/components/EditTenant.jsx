@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import axios from 'axios';
 import "./Popup.css"
-
+import { ipAddress } from '../App';
 function Popup(props) {
 
   const saveEdit = () => {
@@ -18,7 +18,7 @@ function Popup(props) {
     }
 
     if (props.data[0]["Title"] == "Owner"){
-      axios.post("http://localhost:5000/api/saveTenantInformation", {
+      axios.post('http://' + ipAddress + ':5000/api/saveTenantInformation', {
       tenant: props.data[1],
       title: props.data[0].Title,
       password: password,
@@ -27,7 +27,7 @@ function Popup(props) {
       phone: phone
     })
     }else{
-      axios.post("http://localhost:5000/api/saveTenantInformation", {
+      axios.post('http://' + ipAddress + ':5000/api/saveTenantInformation', {
       tenant: props.data[1],
       title: props.data[0].Title,
       current: current,

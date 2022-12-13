@@ -4,6 +4,7 @@ import axios from 'axios'
 import LoginCheck from '../modules/LoginCheck';
 import { useNavigate } from "react-router-dom";
 import { CalcEdit, CalcRead, Sidebar } from "../components";
+import { ipAddress } from '../App';
 
 const Calculate = () => {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const Calculate = () => {
       };
 
       const newClients = [...clients, newClient];
-      axios.post('http://localhost:5000/api/addCalcData', { data: newClient });
+      axios.post('http://' + ipAddress + ':5000/api/addCalcData', { data: newClient });
       setCalculations(false);
       setClients(newClients);
       event.target.reset();
@@ -102,7 +103,7 @@ const Calculate = () => {
 
     newClients[index] = editedClient;
 
-    axios.post('http://localhost:5000/api/addCalcData', { data: editedClient });
+    axios.post('http://' + ipAddress + ':5000/api/addCalcData', { data: editedClient });
     setCalculations(false);
     setClients(newClients);
     setEditClientID(null);
@@ -133,7 +134,7 @@ const Calculate = () => {
 
     const index = clients.findIndex((client) => client.id === clientID);
 
-    axios.post('http://localhost:5000/api/deleteCalcData', { id: clientID });
+    axios.post('http://' + ipAddress + ':5000/api/deleteCalcData', { id: clientID });
     newClients.splice(index, 1);
 
     setCalculations(false);
@@ -152,7 +153,7 @@ const Calculate = () => {
       clientNameList.push(obj.property);
     })
 
-    axios.post('http://localhost:5000/api/calculateData', { properties: clientNameList }).then(res => {
+    axios.post('http://' + ipAddress + ':5000/api/calculateData', { properties: clientNameList }).then(res => {
       clients.forEach(obj => {
         obj.calculations = res.data[obj.property];
       })
@@ -197,12 +198,12 @@ const Calculate = () => {
   useEffect(() => {
 
     const load = async () => {
-      axios.get('http://localhost:5000/api/getAddresses').then(res => {
+      axios.get('http://' + ipAddress + ':5000/api/getAddresses').then(res => {
 
         setProperties(res.data);
       })
 
-      axios.get('http://localhost:5000/api/getCalcData').then(res => {
+      axios.get('http://' + ipAddress + ':5000/api/getCalcData').then(res => {
         const data = res.data;
         let initClients = [];
 

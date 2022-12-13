@@ -718,37 +718,72 @@
 
   /* overview   */
 
-  .GraphContainer {
-    max-width: 98%;
-    margin: 0 auto;
+.over__GraphContainer {
+    max-width: 90vw;
+    
     display: grid;
-    gap: 1%;
+    gap: 1vw;
     
     
 }
 
-.graph {
+.over__pageOverview{
+    margin: 0 auto;
+}
+.over__GraphContainer2 {
+    max-width: 80vw;
+    display: grid;
+
+   
+    
+}
+
+.over__graph {
     border-radius: 25px;
-    width: 50vw;
+    width: 70vw;
     position: relative;
     background-color: rgb(255, 255, 255);
     padding: 5px;
     align-content: center;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
-.graph > #expvsrev{
+.over__graph2 {
+   border-radius: 25px;
+    width: 70vw;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+    align-content: center;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   
+  }
+
+.over__graph > #accGraph{
   width: 90%;
   margin: auto;
 }
-
-  @media (min-width: 1200px) {
-    .GraphContainer { grid-template-columns: repeat(2, 1fr); }
-    .graph {
-    width: 40vw;  
+.over__graph2 > #accGraph{
+    width: 90%;
+    margin: auto;
   }
+  @media (min-width: 1200px) {
+    .over__GraphContainer { grid-template-columns: repeat(2, 1fr); }
+    .over__GraphContainer2 { grid-template-columns: repeat(2, 1fr); }
+    .over__graph2 {
+        width: 83vw;  
+        }
+    .over__graph {
+    width: 41vw;  
+    }
 }
 
-.graphTitle {
+.over_button{
+    color: blue;
+    text-underline-position: below;
+    text-decoration: underline;
+}
+
+.over__graphTitle {
     
     margin: 20px;
     text-align: center;

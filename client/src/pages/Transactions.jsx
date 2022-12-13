@@ -38,6 +38,7 @@ const Transactions = () => {
     const onLoad = async () => {
 
       axios.get('http://' + ipAddress + ':5000/api/loadTransactions').then((res) => {
+        //res.data.pop();
         setDataArr(res.data);
       })
 
@@ -85,6 +86,7 @@ const Transactions = () => {
       if (obj[1] == id) {
         obj[0] = json;
         axios.post("http://" + ipAddress + ":5000/api/setTransaction",{id: id,data:json});
+        localStorage.setItem("reloadFlag",'True');
         setPopUp(false);
       }
     })
@@ -92,7 +94,16 @@ const Transactions = () => {
 
   const deleteData = (id) => {
     setDataArr(dataArr.filter(obj => obj[1] != id));
-    axios.post("http://" + ipAddress + ":5000/api/deleteTransaction",{id: id});
+
+    var alertText = 'Are you sure you want to delete this transaction?'
+    
+    if (window.confirm(alertText) === true) {
+      axios.post("http://" + ipAddress + ":5000/api/deleteTransaction",{id: id});
+      localStorage.setItem("reloadFlag",'True');
+    } else {
+      alert('Transaction not deleted.');
+    }
+
   }
 
   const selectSearchType = event => {
@@ -153,27 +164,13 @@ const Transactions = () => {
     pageNumbers.push(i);
   }
 
-  // sorts columns of table
-  const sorting = (col) => {
-
-    if (order === "asc") {
-      const sorted = [...list].sort(
-        (a, b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col] ? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
-      );
-      setOrder("desc");
-    }
-    else if (order === "desc") {
-      const sorted = [...list].sort(
-        (a, b) => typeof a[0][col] == 'number' ? a[0][col] > b[0][col] ? 1 : -1 : a[0][col].toLowerCase() > b[0][col].toLowerCase() ? 1 : -1
-      );
-      setOrder("asc");
-    }
-  };
+  
 
   const edit = (data) => {
     setData(data[0]);
     setId(data[1]);
     setPopUp(true);
+    
   }
 
   return (
@@ -237,17 +234,17 @@ const Transactions = () => {
             <table className="trans__table">
               <thead>
                 <tr>
-                  <th onClick={() => sorting("Number")}>Num</th>
-                  <th onClick={() => sorting("Address")}>Address</th>
-                  <th onClick={() => sorting("HouseNum")}>House #</th>
-                  <th onClick={() => sorting("Date")}>Date</th>
-                  <th onClick={() => sorting("DatePaid")}>Date Paid</th>
-                  <th onClick={() => sorting("PayerName")}>Name</th>
-                  <th onClick={() => sorting("PayerTitle")}>Title</th>
-                  <th onClick={() => sorting("Payment")}>Payment</th>
-                  <th onClick={() => sorting("PaymentMethod")}>Method</th>
-                  <th onClick={() => sorting("Desc")}>Desc</th>
-                  <th onClick={() => sorting("Type")}>Type</th>
+                  <th >Num</th>
+                  <th >Address</th>
+                  <th >House #</th>
+                  <th >Date</th>
+                  <th >Date Paid</th>
+                  <th >Name</th>
+                  <th >Title</th>
+                  <th >Payment</th>
+                  <th >Method</th>
+                  <th >Desc</th>
+                  <th >Type</th>
                   <th>Notes</th>
                   <th></th>
                   <th></th>

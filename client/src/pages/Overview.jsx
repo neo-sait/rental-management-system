@@ -54,27 +54,31 @@ var propInt = [];
 var propPrin = [];
 var propertyData = [];
 var antiLoop = true;
+var tenants = [];
+var owedRent = [];
+var filter = {};
 const Overview = () => {
   const navigate = useNavigate();
   LoginCheck(navigate);
 
   const [yearDisp, setYearDisp] = useState(years[0]);
-  const [buttonPopup, setButtonPopup] = useState(false);
   const [expRevData, setExpRevData] = useState({exp:expYr, rev:revYr});
+  const [owed, setOwed] = useState([]);
   const [propData, setPropData] = useState({labels: properties, rev: propRev, exp: propExp, 
                                             insurance: propIns, tax: propTax, mort: propMort, 
                                             interest: propInt, principle: propPrin});
   const [profLossData, setprofLossData] = useState({labels:years,rev:revAll,exp:expAll,
                                                     prof:profAll,loss:lossAll});
+
   //clears current year data and passes on data array to be proccessed.
   
 
   function getProperties(arr){
     var props = []
     arr.forEach(elem => {
-      console.log(elem[0].Address);
+      //console.log(elem[0].Address);
       if(!props.includes(elem[0].Address) && elem[0].Address !== 'Other' && !('counter' in elem[0])){
-        console.log(elem[0].Address + " added");
+        //console.log(elem[0].Address + " added");
         props.push(elem[0].Address);
       }
     });
@@ -92,6 +96,9 @@ const Overview = () => {
     //console.log(props)
     return props;
   }
+
+  
+
 
   function getYears(arr){
       var yearsArr = []
@@ -242,13 +249,24 @@ const Overview = () => {
     procPrinciple(properties);
   }
 
-  
+  function resolve(elem){
+    elem[0].DatePaid = elem[0].Date;
+    axios.post("http://" + ipAddress + ":5000/api/setTransaction",{id: elem[1],data:elem[0]});
+    console.log(owedRent);
+    owedRent.splice(owedRent.indexOf(elem),1)
+    console.log(owedRent);
+    setOwed(owedRent);
+    cycleYear(yearDisp);
+    localStorage.setItem("reloadFlag",'True');
+    console.log(elem);
+  } 
 
   function loadExpVRev(yr) {
     expYr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     revYr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     fullDataArr.forEach(element => procExpRev(element[0], yr));
   }
+  
   
 
   //changes data displayed when title is clicked
@@ -284,32 +302,55 @@ const Overview = () => {
   LoginCheck(navigate);
   //initial load of data
   useEffect(() => {
-    LoginCheck(navigate);
-    console.log("if checked");
-    if (antiLoop) {
+    LoginCheck(navigate );
+    
+    //console.log("if checked");
+    if (antiLoop || localStorage.getItem('reloadFlag') === 'True') {
+      localStorage.removeItem('reloadFlag');
       antiLoop = false;
-      console.log("if trig");
+      //console.log("if trig");
+
+      axios.get('http://' + ipAddress + ':5000/api/loadTenants').then((res) => {
+        //console.log(res.data);
+        res.data.forEach(elem => { 
+          if (elem[0]['Current Tenant'] === 'Yes'){
+            tenants.push(elem[0]);
+          }
+        });
+      //console.log(tenants);
+      });
+      
+
       axios.get('http://' + ipAddress + ':5000/api/loadTransactions').then((res) => {
-        
+        //res.data.pop();
         fullDataArr = res.data;
-        console.log(fullDataArr);
+        //console.log(fullDataArr);
         years = getYears(fullDataArr);
         properties = getProperties(fullDataArr);
-        //propertyData = {labels: properties,};
+     
         setYearDisp(years[0])
-        console.log(years);
-        console.log(fullDataArr.length + ' items pulled from db')
+        //console.log(years);
+        //console.log(fullDataArr.length + ' items pulled from db')
         loadPropData(years[0]);
         loadExpVRev(years[0]);
         setPropData({labels: properties, rev: propRev, exp: propExp, 
           insurance: propIns, tax: propTax, mort: propMort, 
           interest: propInt, principle: propPrin});
         setExpRevData({exp:expYr, rev:revYr});
-        //localStorage.setItem("graphdataLoaded", "True");
-        //console.log(expRevData);
+       
         getProperties(fullDataArr);
         loadProfLoss(fullDataArr);
         setprofLossData({labels:years,rev:revAll,exp:expAll,prof:profAll,loss:lossAll});
+        
+        fullDataArr.forEach(elem => { 
+          if(elem[0].Desc === 'Monthly Rent Charged' && !(isNaN(elem[0].DatePaid) ||  elem[0].DatePaid !== '')){
+            owedRent.push(elem);
+          }
+          
+          
+        });
+        setOwed(owedRent);
+        console.log(owed);
       })
     }
   },[])
@@ -325,45 +366,71 @@ const Overview = () => {
         <Sidebar />
       </div>
 
-      <div id="pageOverview">
+      <div id="over__pageOverview">
 
 
-        <div class="GraphContainer">
-           <div class="graph">
-            <div class="popcontainer"><Popup trigger={buttonPopup} setTrigger={setButtonPopup} data={{exp:expYr, rev:revYr}}></Popup></div>
-            <div > <h1 class="graphTitle" >Expenses and Revenue for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
-            <div id='expvsrev'><ExpRevChart datasets={expRevData} /></div>
+        <div class="over__GraphContainer">
+           <div class="over__graph">
+            <div > <h1 class="over__graphTitle" >Expenses and Revenue for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
+            <div id='accGraph'><ExpRevChart datasets={expRevData} /></div>
           </div>  
 
-
-          <div class="graph">
-            <div ><h1 class="graphTitle" >Property Data for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
-            <div id='expvsrev'><PropOChart datasets={propData} /></div>
+          <div class="over__graph">
+            <div ><h1 class="over__graphTitle" >Property Data for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
+            <div id='accGraph'><PropOChart datasets={propData} /></div>
           </div>
 
-          
-          <div class="graph" >  
-            <div ><h1 class="graphTitle" >Profit and Loss</h1></div>
-            <div id='expvsrev'><ProfLossChart datasets={profLossData} />
+          <div class="over__graph" >  
+            <div ><h1 class="over__graphTitle" >Profit and Loss</h1></div>
+            <div id='accGraph'><ProfLossChart datasets={profLossData} />
             </div>
           </div>
 
-
-          <div class="graph">
-            <div ><h1 class="graphTitle" >Property Data for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
-            <div id='expvsrev'><PropChart datasets={propData} /></div>
+          <div class="over__graph">
+            <div ><h1 class="over__graphTitle" >Property Data for <button onClick={() => cycleYear(yearDisp-1)}>&lt;</button> {yearDisp} <button onClick={() => cycleYear(yearDisp+1)}>&gt;</button></h1></div>
+            <div id='accGraph'><PropChart datasets={propData} /></div>
           </div>
-
-
-          
-
-         
-
-
-          
             
         </div>
-        
+        <br />
+        <div className='over__GraphContainer2'>
+            <div class="over__graph2">
+              <div ><h1 class="over__graphTitle" >Outstanding Payments</h1></div>
+              <div>
+                <table className="trans__table">
+                  <thead>
+                    <tr>
+                      <th>Tenant</th>
+                      <th>Property</th>
+                      <th>Year</th>
+                      <th>Month</th>
+                      <th>Owed($)</th>
+                      <th>Resolve</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {owed.map((val) => (
+
+                      <tr>
+                        <td>{val[0].PayerName}</td>
+                        <td>{val[0].PayerName}</td>
+                        <td>{val[0].Year}</td>
+                        <td>{val[0].Month}</td>
+                        <td>{val[0].Payment}</td>
+                        <td > <button className="over_button" onClick={() => resolve(val)}>Mark as Paid</button> </td>
+                      </tr>
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+           
+
+        </div>
+
+
       </div>
         
     </div>

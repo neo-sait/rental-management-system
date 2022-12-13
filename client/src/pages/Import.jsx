@@ -35,18 +35,6 @@ const importCSV = () => {
           });
         // express has a limit on sending data through post requests, the idea is to seperate the imported dataset into chunks
         // this should allow YEARS of archived data to be sent through with ease, regardless if the size exceeds the limit.
-        let chunkSize = 100;
-  
-        for (let i = 0; i < output.length; i += chunkSize) {
-          const chunk = output.slice(i, i + chunkSize);
-  
-          /*
-          axios.post('http://localhost:5000/api/importCSV', { out: chunk }).then((res) => {
-            console.log(res.data);
-          });
-          */
-        }
-        
         // reset frontend logic
         file = null;
         display.innerHTML = "Select CSV File";

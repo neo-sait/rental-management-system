@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom';
-import { SiShopware } from 'react-icons/si';
+import { AiFillHome } from 'react-icons/ai';
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
@@ -14,8 +14,8 @@ const Sidebar = () => {
       {(<>
         <div className="flex justify-between
         items-center ">
-          <Link to="/" className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 ">
-            <SiShopware/> <span> 4 Rent </span> 
+          <Link to="/Overview" className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 ">
+            <AiFillHome/> <span> 4Rent </span> 
           </Link>
           <TooltipComponent content="Menu"
           position="BottomCenter">

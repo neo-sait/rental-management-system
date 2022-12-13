@@ -13,7 +13,9 @@ const App = () => {
     return (
       <Router>
       <Routes>
-  
+         <Route path="/overview" element={
+          <Overview /> 
+         } />
           <Route path="/profiles" element={
           <Profiles /> 
          } />
@@ -31,9 +33,7 @@ const App = () => {
           <NewTransaction /> 
          } />
 
-        <Route path="/overview" element={
-          <Overview /> 
-         } />
+        
 
         <Route path="/lists" element={
           <Lists /> 
@@ -52,5 +52,6 @@ const App = () => {
      </Router>
   )
 }
+//replace 'localhost' with IP of deployment machine
 export const  ipAddress = 'localhost'; 
 export default App

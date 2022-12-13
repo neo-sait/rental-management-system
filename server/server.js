@@ -3,13 +3,17 @@ const firestore = require('./databaseaccess');
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const app = express();
-
 var transactCache = [];
 var cached = false;
 
+//////////////////////////////////////
+// change 'localhost' to '[IP of VM/Deployment Machine]'
+const ipAddress = 'localhost';
+////////////////////////////////////
+
 app.use(express.json({ limit: 1000000}));
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: 'http://'+ipAddress+':3000',
     methods: ["GET","POST","DELETE"]
 }));
 
@@ -123,16 +127,68 @@ app.get('/api/loadTransactions',(req,res) =>{
 
 // still developing, res input overload
 app.post('/api/importCSV',(req,res)=>{
+    const output = req.body;
     cached = false;
-    const output = req.body.out;
+    firestore.get("Transactions","--Counter--").then((result)=>{
+        console.log(result)
+        let counter = result[0].counter;
+        
+        output.forEach(element => {
+            counter++;
+            let tDate = null;
+            let tDateP = null;
 
-    output.forEach(element => firestore.add("Transactions",element));
 
+            if(element.Date != null && element.Date != ''){
+                tDate = new Date(element.Date);
+                tDate = tDate.toLocaleDateString('en-CA');
+            }else if ((element.Date == null || element.Date === '') && (element.DatePaid !== null || element.DatePaid !== '')){
+                tDate = new Date(element.DatePaid);
+                tDate = tDate.toLocaleDateString('en-CA')
+            }
+
+            if(element.DatePaid != null && element.DatePaid != ''){
+                tDateP = new Date(element.DatePaid);
+                tDateP = tDateP.toLocaleDateString('en-CA')
+            }else{
+                tDateP = null;
+            }
+
+            const newTransact = {
+                Address: element.Address,
+                Date: tDate,
+                DatePaid: tDateP,
+                Desc: element.Desc,
+                HouseNum: element.HouseNum,
+                Notes: element.Notes,
+                Number: counter,
+                PayerName: element.PayerName,
+                PayerTitle: element.PayerTitle,
+                Payment: parseFloat(element.Payment.replace("(",'-').replace(/[^0-9.-\s]/g , '')),
+                PaymentMethod: element.PaymentMethod,
+                Type: element.Type,
+                Month: tDate.substring(5,7), 
+                Year: tDate.substring(0,4),
+                
+              };
+              firestore.add("Transactions",newTransact);
+              //console.log(newTransact)
+         
+        
+        }
+        );
+        
+        //console.log(output);
+        //console.log(output.length);
+        //console.log(counter);
+     })
+    firestore.incrementDoc("Transactions","--Counter--", counter);
+    //output.forEach(element => firestore.add("TranTest",element));
     res.send(true);
 })
 
 app.get('/api/loadDash',(req,res) =>{
-    firestore.getAll("Transaction").then((result)=>{
+    firestore.getAll("Transaction","Number").then((result)=>{
         res.send(result)
     })
 })
@@ -375,7 +431,7 @@ app.post('/api/calculateData',(req,res)=>{
         propertyData[obj] = {Revenue: 0, Expense: 0, Principle: 0};
     })
 
-    firestore.getAll("Transactions").then(result=>{
+    firestore.getAll("Transactions","Number").then(result=>{
         
         result.forEach(obj=>{
             if (obj[0].Address in propertyData){
@@ -402,7 +458,7 @@ app.post('/api/setTransaction',(req,res)=>{
     cached = false;
     const id = req.body.id;
     const data = req.body.data;
-
+    
     firestore.set("Transactions",id,data);
     res.send(true);
 })
@@ -412,9 +468,6 @@ app.post('/api/deleteTransaction',(req,res)=>{
     const id = req.body.id;
 
     firestore.remove("Transactions",id);
-    firestore.get("Transactions","--Counter--").then(result=>{
-        firestore.incrementDoc("Transactions","--Counter--",result[0].counter-1);
-    })
 })
 
 app.listen(5000, () => console.log('Server on port 5000'));
