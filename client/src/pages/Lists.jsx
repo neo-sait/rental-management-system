@@ -255,34 +255,6 @@ class Lists extends Component{
             <table className="list__table">
               <thead>
                 <tr>
-                  <th>Payer Names</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <form id="addPayer" onSubmit={this.addSubmit}>
-                      <input type="text" name="payer" placeholder="New Payer Name"></input>
-                      <button className="list__add">Add</button>
-                    </form>
-                  </td>
-                </tr>
-                {this.state.payerArr.map((val) => (
-    
-                  <tr key={val.id}>
-                    <td>
-                    <input type="text" className="list__input" placeholder={val[`Payer Name`]} id={"input"+val.id} readOnly></input>
-                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("payer",val.id)}}>Edit</button>
-                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("payer",val.id)}}>Delete</button>
-                    </td>
-                  </tr>
-    
-                ))}
-              </tbody>
-            </table>
-            <table className="list__table">
-              <thead>
-                <tr>
                   <th>House Numbers</th>
                 </tr>
               </thead>
@@ -302,6 +274,34 @@ class Lists extends Component{
                     <input type="text" className="list__input" placeholder={val[`House Number`]} id={"input"+val.id} readOnly></input>
                       <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("house",val.id)}}>Edit</button>
                       <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("house",val.id)}}>Delete</button>
+                    </td>
+                  </tr>
+    
+                ))}
+              </tbody>
+            </table>
+            <table className="list__table">
+              <thead>
+                <tr>
+                  <th>Payer Names</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <form id="addPayer" onSubmit={this.addSubmit}>
+                      <input type="text" name="payer" placeholder="New Payer Name"></input>
+                      <button className="list__add">Add</button>
+                    </form>
+                  </td>
+                </tr>
+                {this.state.payerArr.map((val) => (
+    
+                  <tr key={val.id}>
+                    <td>
+                    <input type="text" className="list__input" placeholder={val[`Payer Name`]} id={"input"+val.id} readOnly></input>
+                      <button className="list__edit" id={"edit"+val.id} onClick={ () => {this.editInput("payer",val.id)}}>Edit</button>
+                      <button className="list__delete" id={"delete"+val.id} onClick={() => {this.deleteList("payer",val.id)}}>Delete</button>
                     </td>
                   </tr>
     
