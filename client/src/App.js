@@ -53,5 +53,5 @@ const App = () => {
   )
 }
 //replace 'localhost' with IP of deployment machine
-export const  ipAddress = '192.18.153.223'; 
+export const  ipAddress = 'localhost'; 
 export default App
